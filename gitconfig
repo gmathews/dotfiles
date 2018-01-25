@@ -1,0 +1,14 @@
+[user]
+	name = George Mathews
+	email = george@georgemathe.ws
+[push]
+    default = simple
+[core]
+	excludesfile = /Users/george/.gitignore_global
+    pager = diff-so-fancy | less --tabs=4 -RFX
+    editor = vim
+[merge]
+	tool = vimdiff
+	conflictstyle = diff3
+[mergetool]
+	prompt = false
