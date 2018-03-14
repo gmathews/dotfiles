@@ -27,11 +27,6 @@ export VISUAL=vim
 autoload -U promptinit; promptinit
 prompt pure
 
-# Tmux, attach if existing
-if which tmux >/dev/null 2>&1; then
-    test -z "$TMUX" && tmux attach
-fi
-
 VIM_PROMPT="❯"
 PROMPT='%(?.%F{magenta}.%F{red})${VIM_PROMPT}%f '
 

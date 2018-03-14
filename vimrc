@@ -197,10 +197,13 @@ let g:gutentags_ctags_tagfile = '.tags'
 " Setup ctrlP
 map <leader>s :CtrlP<CR>
 " This isn't used if we use ag
-let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn))$'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]((node_modules|target|dist|bin|obj)|(\.(git|hg|svn)))$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ }
+
 " We don't want to have sub modules override our search, only use the current working directory.
 " Add 'r' to use the parent git repo as the root
-" let g:ctrlp_working_path_mode = 'a'
 let g:ctrlp_working_path_mode = 0
 " Use the silver searcher
 if executable("ag")
@@ -261,7 +264,7 @@ let g:Omnisharp_stop_server = 0
 augroup omnisharp_commands
     autocmd!
 
-    autocmd FileType cs setlocal expandtab!
+    autocmd FileType cs setlocal noexpandtab
     "Set autocomplete function to OmniSharp (if not using YouCompleteMe completion plugin)
     autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 
