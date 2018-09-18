@@ -263,6 +263,12 @@ let g:syntastic_cs_checkers = ['code_checker']
 let g:syntastic_python_checkers = ['flake8']
 " let g:syntastic_javascript_checkers = ['eslint']
 " let g:syntastic_javascript_eslint_exe = 'npm run lint --'
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = []
 
 function CheckJavaScriptLinter(filepath, linter)
@@ -284,6 +290,7 @@ function SetupJavaScriptLinter()
 endfunction
 
 autocmd FileType javascript call SetupJavaScriptLinter()
+
 let g:OmniSharp_server_type = 'roslyn'
 let g:Omnisharp_start_server = 0
 let g:Omnisharp_stop_server = 0
