@@ -54,7 +54,7 @@ Plugin 'Valloric/YouCompleteMe'
 "Plugin 'raichoo/haskell-vim'
 
 " Csharp stuff
-Plugin 'OmniSharp/omnisharp-vim'
+" Plugin 'OmniSharp/omnisharp-vim'
 
 " Personal wiki
 Plugin 'vimwiki/vimwiki'
@@ -212,8 +212,8 @@ if executable("ag")
 endif
 
 " Setup fugitive
-map <leader>gd :Gdiff<CR>
-map <leader>gb :Gblame<CR>
+" map <leader>gd :Gdiff<CR>
+" map <leader>gb :Gblame<CR>
 
 " Setup tern for jump to definition and documentation
 "let g:tern_map_keys=1
@@ -222,6 +222,8 @@ map <leader>tD :TernDoc<CR>
 "map <leader>tt :TernType<CR>
 map <leader>tR :TernRename<CR>
 
+" Supress YCM imp module warning
+silent! py3 pass
 " Setup you complete me
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
@@ -255,11 +257,18 @@ let g:vimwiki_list = [{'path': '~/Dropbox/wiki/', 'auto_toc': 1,
 
 " Setup omnisharp
 let g:OmniSharp_selector_ui = 'ctrlp'
+let g:OmniSharp_server_path = '~/.omnisharp/OmniSharp.exe'
 let g:OmniSharp_host = "http://localhost:2000"
 let g:syntastic_cs_checkers = ['code_checker']
+let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_eslint_exe = 'npm run lint --'
 let g:OmniSharp_server_type = 'roslyn'
 let g:Omnisharp_start_server = 0
 let g:Omnisharp_stop_server = 0
+
+" Node.js stuff
+au Filetype javascript setl sw=2 sts=2 et
 
 augroup omnisharp_commands
     autocmd!
@@ -276,7 +285,7 @@ augroup omnisharp_commands
     autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
 
     " Automatically add new cs files to the nearest project on save
-    autocmd BufWritePost *.cs call OmniSharp#AddToProject()
+    " autocmd BufWritePost *.cs call OmniSharp#AddToProject()
 
     "show type information automatically when the cursor stops moving
     " autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()

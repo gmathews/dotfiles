@@ -45,5 +45,12 @@ function zle-line-init zle-keymap-select {
 zle -N zle-line-init
 zle -N zle-keymap-select
 
+USER_BASE_PATH=$(python3 -m site --user-base)
+export PATH=$PATH:$USER_BASE_PATH/bin
+
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+export WORKON_HOME=~/Envs
+source /usr/local/bin/virtualenvwrapper.sh
+
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
