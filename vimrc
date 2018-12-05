@@ -39,13 +39,7 @@ Plugin 'ludovicchabant/vim-gutentags'
 Plugin 'morhetz/gruvbox'
 
 " JS highlighting
-"Plugin 'othree/yajs.vim'
-
-" JS indentation
-"Plugin 'gavocanov/vim-js-indent'
-
-" This is for better JS processing
-Plugin 'marijnh/tern_for_vim'
+Plugin 'pangloss/vim-javascript'
 " This is for nicer autocompletion
 " Shit breaks all the time because python on OSX sucks
 Plugin 'Valloric/YouCompleteMe'
@@ -215,12 +209,7 @@ endif
 " map <leader>gd :Gdiff<CR>
 " map <leader>gb :Gblame<CR>
 
-" Setup tern for jump to definition and documentation
-"let g:tern_map_keys=1
-map <leader>td :TernDef<CR>
-map <leader>tD :TernDoc<CR>
-"map <leader>tt :TernType<CR>
-map <leader>tR :TernRename<CR>
+let g:javascript_plugin_jsdoc = 1
 
 " Supress YCM imp module warning
 silent! py3 pass
@@ -271,7 +260,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = []
 
-function CheckJavaScriptLinter(filepath, linter)
+function! CheckJavaScriptLinter(filepath, linter)
 	if exists('b:syntastic_checkers')
 		return
 	endif
@@ -281,7 +270,7 @@ function CheckJavaScriptLinter(filepath, linter)
 	endif
 endfunction
 
-function SetupJavaScriptLinter()
+function! SetupJavaScriptLinter()
 	let l:current_folder = expand('%:p:h')
 	let l:bin_folder = fnamemodify(syntastic#util#findFileInParent('package.json', l:current_folder), ':h')
 	let l:bin_folder = l:bin_folder . '/node_modules/.bin/'
