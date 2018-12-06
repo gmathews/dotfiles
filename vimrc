@@ -39,13 +39,7 @@ Plugin 'ludovicchabant/vim-gutentags'
 Plugin 'morhetz/gruvbox'
 
 " JS highlighting
-"Plugin 'othree/yajs.vim'
-
-" JS indentation
-"Plugin 'gavocanov/vim-js-indent'
-
-" This is for better JS processing
-Plugin 'marijnh/tern_for_vim'
+Plugin 'pangloss/vim-javascript'
 " This is for nicer autocompletion
 " Shit breaks all the time because python on OSX sucks
 Plugin 'Valloric/YouCompleteMe'
@@ -54,7 +48,7 @@ Plugin 'Valloric/YouCompleteMe'
 "Plugin 'raichoo/haskell-vim'
 
 " Csharp stuff
-Plugin 'OmniSharp/omnisharp-vim'
+" Plugin 'OmniSharp/omnisharp-vim'
 
 " Personal wiki
 Plugin 'vimwiki/vimwiki'
@@ -212,15 +206,10 @@ if executable("ag")
 endif
 
 " Setup fugitive
-map <leader>gd :Gdiff<CR>
-map <leader>gb :Gblame<CR>
+" map <leader>gd :Gdiff<CR>
+" map <leader>gb :Gblame<CR>
 
-" Setup tern for jump to definition and documentation
-"let g:tern_map_keys=1
-map <leader>td :TernDef<CR>
-map <leader>tD :TernDoc<CR>
-"map <leader>tt :TernType<CR>
-map <leader>tR :TernRename<CR>
+let g:javascript_plugin_jsdoc = 1
 
 " Suppress YCM imp module warning
 silent! py3 pass
@@ -257,11 +246,46 @@ let g:vimwiki_list = [{'path': '~/Dropbox/wiki/', 'auto_toc': 1,
 
 " Setup omnisharp
 let g:OmniSharp_selector_ui = 'ctrlp'
+let g:OmniSharp_server_path = '~/.omnisharp/OmniSharp.exe'
 let g:OmniSharp_host = "http://localhost:2000"
 let g:syntastic_cs_checkers = ['code_checker']
+let g:syntastic_python_checkers = ['flake8']
+" let g:syntastic_javascript_checkers = ['eslint']
+" let g:syntastic_javascript_eslint_exe = 'npm run lint --'
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers = []
+
+function! CheckJavaScriptLinter(filepath, linter)
+	if exists('b:syntastic_checkers')
+		return
+	endif
+	if filereadable(a:filepath)
+		let b:syntastic_checkers = [a:linter]
+		let {'b:syntastic_' . a:linter . '_exec'} = a:filepath
+	endif
+endfunction
+
+function! SetupJavaScriptLinter()
+	let l:current_folder = expand('%:p:h')
+	let l:bin_folder = fnamemodify(syntastic#util#findFileInParent('package.json', l:current_folder), ':h')
+	let l:bin_folder = l:bin_folder . '/node_modules/.bin/'
+	call CheckJavaScriptLinter(l:bin_folder . 'standard', 'standard')
+	call CheckJavaScriptLinter(l:bin_folder . 'eslint', 'eslint')
+endfunction
+
+autocmd FileType javascript call SetupJavaScriptLinter()
+
 let g:OmniSharp_server_type = 'roslyn'
 let g:Omnisharp_start_server = 0
 let g:Omnisharp_stop_server = 0
+
+" Node.js stuff
+au Filetype javascript setl sw=2 sts=2 et
 
 augroup omnisharp_commands
     autocmd!
@@ -278,7 +302,7 @@ augroup omnisharp_commands
     autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
 
     " Automatically add new cs files to the nearest project on save
-    autocmd BufWritePost *.cs call OmniSharp#AddToProject()
+    " autocmd BufWritePost *.cs call OmniSharp#AddToProject()
 
     "show type information automatically when the cursor stops moving
     " autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()

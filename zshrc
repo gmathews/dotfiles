@@ -45,5 +45,16 @@ prompt pure
 # zle -N zle-line-init
 # zle -N zle-keymap-select
 
+# Search current history
+bindkey "^[[A" history-beginning-search-backward
+bindkey "^[[B" history-beginning-search-forward
+
+USER_BASE_PATH=$(python3 -m site --user-base)
+export PATH=$PATH:$USER_BASE_PATH/bin
+
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+export WORKON_HOME=~/Envs
+source /usr/local/bin/virtualenvwrapper.sh
+
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
