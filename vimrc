@@ -75,7 +75,7 @@ colorscheme gruvbox
 
 " Stuff to do when we start in gui mode
 if has('gui_running')
-    set guifont=Hack\ Regular:h12
+    " set guifont=Hack\ Regular:h12
     set macligatures
     set guifont=Fira\ Code:h12
     set guioptions-=T   " no toolbar
@@ -222,6 +222,8 @@ map <leader>tD :TernDoc<CR>
 "map <leader>tt :TernType<CR>
 map <leader>tR :TernRename<CR>
 
+" Suppress YCM imp module warning
+silent! py3 pass
 " Setup you complete me
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
