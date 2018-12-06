@@ -67,6 +67,14 @@ let g:airline#extensions#tabline#buffer_min_count = 2
 let g:airline#extensions#virtualenv#enabled = 0
 
 let g:deoplete#enable_at_startup = 1
+" Ignore most sources
+let g:deoplete#sources = {}
+let g:deoplete#sources._ = ['LanguageClient']
+" Disable the candidates in Comment/String syntaxes.
+call deoplete#custom#source('_',
+            \ 'disabled_syntaxes', ['Comment', 'String'])
+" Close preview when leaving insert or completion is done
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " Nice things for editing
 syntax on
@@ -121,6 +129,8 @@ endif
 
 " Automatically start language servers.
 let g:LanguageClient_autoStart = 1
+" Use Ale for linting
+let g:LanguageClient_diagnosticsEnable = 0
 " Minimal LSP configuration for JavaScript
 let g:LanguageClient_serverCommands = {}
 if executable('javascript-typescript-stdio')
@@ -162,6 +172,38 @@ let g:javascript_plugin_jsdoc = 1
 
 " Python stuff
 autocmd BufRead,BufNewFile *.py let python_highlight_all=1
+let g:python3_host_prog = '/usr/local/bin/python3'
+let g:loaded_python_provider = 1
+
+" Setup signify
+let g:signify_update_on_focusgained = 1
+
+" No need for nerdtree
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_winsize = 25
+let g:netrw_list_hide= '.*\.swp$,.*\.pyc$'
+" Manage toggle Lexplore
+let g:NetrwIsOpen=0
+
+function! ToggleNetrw()
+    if g:NetrwIsOpen
+        let i = bufnr("$")
+        while (i >= 1)
+            if (getbufvar(i, "&filetype") == "netrw")
+                silent exe "bwipeout " . i 
+            endif
+            let i-=1
+        endwhile
+        let g:NetrwIsOpen=0
+    else
+        let g:NetrwIsOpen=1
+        silent Lexplore
+    endif
+endfunction
+
+"Keymaps
 
 " Fuzzy finder
 map <leader>s :FuzzyOpen<CR>
@@ -170,6 +212,5 @@ map <leader>s :FuzzyOpen<CR>
 map <leader>a :call LanguageClient#textDocument_documentSymbol()<CR>
 map <leader>r :call LanguageClient#textDocument_references()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-
-" Setup signify
-let g:signify_update_on_focusgained = 1
+" File explorer
+map <leader>e :call ToggleNetrw()<CR>
