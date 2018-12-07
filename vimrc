@@ -3,59 +3,48 @@ set encoding=utf-8
 
 filetype off                  " required for vundle
 " Set up vundle to manage bundles
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" Let Vundle manage Vundle
-Plugin 'VundleVim/Vundle.vim'
-
-" My bundles
+call plug#begin()
 " Fancy status bar
-Plugin 'bling/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 " Fancy file explorer
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 " Tag explorer
-Plugin 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 " Awesome comment/uncomment support
-Plugin 'tomtom/tcomment_vim'
+Plug 'tomtom/tcomment_vim'
 " Fuzzy file finder
-Plugin 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 " For git blame and shit
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 " Indicate git changes on the side
-Plugin 'mhinz/vim-signify'
+Plug 'mhinz/vim-signify'
 " Syntax checker
-" Plugin 'neomake/neomake'
-Plugin 'vim-syntastic/syntastic'
+" Plug 'neomake/neomake'
+Plug 'vim-syntastic/syntastic'
 
 " Indent lines
-Plugin 'nathanaelkane/vim-indent-guides'
+Plug 'nathanaelkane/vim-indent-guides'
 " Better find in files
-Plugin 'mileszs/ack.vim'
+Plug 'mileszs/ack.vim'
 " Tag management
-Plugin 'ludovicchabant/vim-gutentags'
+Plug 'ludovicchabant/vim-gutentags'
 
 " Colorscheme
-Plugin 'morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
 
 " JS highlighting
-Plugin 'pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript'
 " This is for nicer autocompletion
 " Shit breaks all the time because python on OSX sucks
-Plugin 'Valloric/YouCompleteMe'
-" This is haskell stuff
-"Plugin 'eagletmt/neco-ghc'
-"Plugin 'raichoo/haskell-vim'
-
-" Csharp stuff
-" Plugin 'OmniSharp/omnisharp-vim'
+Plug 'Valloric/YouCompleteMe'
 
 " Personal wiki
-Plugin 'vimwiki/vimwiki'
+Plug 'vimwiki/vimwiki'
 
 " Python stuff
-Plugin 'hynek/vim-python-pep8-indent'
-call vundle#end()
+Plug 'hynek/vim-python-pep8-indent'
+call plug#end()
 
 " Filetype stuff
 filetype plugin indent on
