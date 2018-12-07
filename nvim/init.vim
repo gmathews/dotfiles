@@ -1,3 +1,6 @@
+set nocompatible               " be iMproved
+set encoding=utf-8
+
 call plug#begin()
 " Autocomplete
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
