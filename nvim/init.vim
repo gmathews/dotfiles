@@ -178,15 +178,23 @@ let g:loaded_python_provider = 1
 " Setup signify
 let g:signify_update_on_focusgained = 1
 
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  " set grepprg=ag\ --nogroup\ --nocolor
+  set grepprg=ag\ --vimgrep\ $*
+  set grepformat=%f:%l:%c:%m
+endif
+
 " No need for nerdtree
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_winsize = 25
 let g:netrw_list_hide= '.*\.swp$,.*\.pyc$'
-" Manage toggle Lexplore
-let g:NetrwIsOpen=0
 
+" Manage toggle explorer
+let g:NetrwIsOpen=0
 function! ToggleNetrw()
     if g:NetrwIsOpen
         let i = bufnr("$")
