@@ -3,15 +3,17 @@
 zstyle ':completion:*' completer _complete _ignored
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' matcher-list ''
-zstyle :compinstall filename '/home/george/.zshrc'
+zstyle :compinstall filename '/Users/gmathews/.zshrc'
+
+fpath=(~/.zsh/completion $fpath)
 
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=10000
+SAVEHIST=10000
 bindkey -v
 # End of lines configured by zsh-newuser-install
 
@@ -19,7 +21,7 @@ bindkey -v
 alias ls='ls -G'
 alias grep='grep --color=always'
 export GREP_COLOR='1;37;47'
-
+alias mux="tmuxinator"
 # Use vim
 export EDITOR=vim
 export VISUAL=vim
@@ -52,9 +54,6 @@ bindkey "^[[B" history-beginning-search-forward
 USER_BASE_PATH=$(python3 -m site --user-base)
 export PATH=$PATH:$USER_BASE_PATH/bin
 
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
-export WORKON_HOME=~/Envs
-source /usr/local/bin/virtualenvwrapper.sh
-
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi

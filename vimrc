@@ -27,8 +27,6 @@ Plug 'vim-syntastic/syntastic'
 Plug 'nathanaelkane/vim-indent-guides'
 " Better find in files
 Plug 'mileszs/ack.vim'
-" Tag management
-Plug 'ludovicchabant/vim-gutentags'
 
 " Colorscheme
 Plug 'morhetz/gruvbox'
@@ -41,6 +39,9 @@ Plug 'Valloric/YouCompleteMe'
 
 " Personal wiki
 Plug 'vimwiki/vimwiki'
+
+" Random syntax highlighting
+Plug 'sheerun/vim-polyglot'
 
 " Python stuff
 Plug 'hynek/vim-python-pep8-indent'
@@ -93,6 +94,8 @@ set incsearch     " show search matches as you type
 set clipboard=unnamed " yank and paste with the system clipboard
 set autoread
 set nobackup
+set nowritebackup
+set noswapfile
 set title         "set our window/terminal title
 set shortmess+=I
 set cursorline

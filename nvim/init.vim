@@ -5,7 +5,7 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
-
+Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
 " (Optional) Multi-entry selection UI.
 Plug 'junegunn/fzf'
 
@@ -20,8 +20,14 @@ Plug 'mhinz/vim-signify'
 " Syntax checking
 Plug 'w0rp/ale'
 
+" Fancy file explorer
+Plug 'scrooloose/nerdtree'
+
 " JS highlighting
 Plug 'pangloss/vim-javascript'
+
+" Random syntax highlighting
+Plug 'sheerun/vim-polyglot'
 
 " Theme
 Plug 'morhetz/gruvbox'
@@ -35,8 +41,10 @@ Plug 'cloudhead/neovim-fuzzy'
 call plug#end()
 
 " deoplete tab-complete
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<tab>"
+" inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<tab>"
+inoremap <expr><C-j> pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<Up>"
 
 " Setup theme
 set termguicolors
@@ -141,14 +149,6 @@ else
   echo "javascript-typescript-stdio not installed!\n"
   :cq
 endif
-if executable('pyls')
-  let g:LanguageClient_serverCommands.python = ['pyls']
-  " Use LanguageServer for omnifunc completion
-  autocmd FileType python setlocal omnifunc=LanguageClient#complete
-else
-  echo "pyls not installed!\n"
-  :cq
-endif
 
 " Search within subfolders by default
 set path+=**
@@ -200,7 +200,7 @@ function! ToggleNetrw()
         let i = bufnr("$")
         while (i >= 1)
             if (getbufvar(i, "&filetype") == "netrw")
-                silent exe "bwipeout " . i 
+                silent exe "bwipeout " . i
             endif
             let i-=1
         endwhile
@@ -220,5 +220,6 @@ map <leader>s :FuzzyOpen<CR>
 map <leader>a :call LanguageClient#textDocument_documentSymbol()<CR>
 map <leader>r :call LanguageClient#textDocument_references()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+
 " File explorer
 map <leader>e :call ToggleNetrw()<CR>
