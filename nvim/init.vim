@@ -249,6 +249,7 @@ map <leader>s :FuzzyOpen<CR>
 map <leader>a :call LanguageClient#textDocument_documentSymbol()<CR>
 map <leader>r :call LanguageClient#textDocument_references()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
 
 " File explorer
 " map <leader>e :call ToggleNetrw()<CR>
