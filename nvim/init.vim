@@ -9,6 +9,9 @@ Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer ru
 " (Optional) Multi-entry selection UI.
 Plug 'junegunn/fzf'
 
+" Indent lines
+Plug 'nathanaelkane/vim-indent-guides'
+
 " Toggle comments with gcc
 Plug 'tomtom/tcomment_vim'
 
@@ -22,9 +25,6 @@ Plug 'w0rp/ale'
 
 " Fancy file explorer
 Plug 'scrooloose/nerdtree'
-
-" JS highlighting
-Plug 'pangloss/vim-javascript'
 
 " Random syntax highlighting
 Plug 'sheerun/vim-polyglot'
@@ -107,6 +107,7 @@ set hlsearch      " highlight search terms
 set incsearch     " show search matches as you type
 set clipboard=unnamed " yank and paste with the system clipboard
 set autoread
+au FocusGained * :checktime
 set nobackup
 set nowritebackup
 set noswapfile
@@ -138,6 +139,8 @@ endif
 " Automatically start language servers.
 let g:LanguageClient_autoStart = 1
 " Use Ale for linting
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_save = 1
 let g:LanguageClient_diagnosticsEnable = 0
 " Minimal LSP configuration for JavaScript
 let g:LanguageClient_serverCommands = {}
@@ -167,7 +170,8 @@ set wildignore+=*.gif,*.jpg,*.jpeg,*.otf,*.png,*.svg,*.ttf
 set wildignorecase
 
 " Node.js stuff
-au Filetype javascript setl sw=2 sts=2 et
+au BufNewFile,Bufread *.js set filetype=javascript
+" au Filetype javascript setl sw=2 sts=2 et
 let g:javascript_plugin_jsdoc = 1
 
 " Python stuff
@@ -178,6 +182,12 @@ let g:loaded_python_provider = 1
 " Setup signify
 let g:signify_update_on_focusgained = 1
 
+" Setup ident guides
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
+
 " The Silver Searcher
 if executable('ag')
   " Use ag over grep
@@ -186,30 +196,49 @@ if executable('ag')
   set grepformat=%f:%l:%c:%m
 endif
 
-" No need for nerdtree
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_winsize = 25
-let g:netrw_list_hide= '.*\.swp$,.*\.pyc$'
+" No need for nerdtree?
+" let g:netrw_banner = 0
+" let g:netrw_liststyle = 3
+" let g:netrw_browse_split = 4
+" let g:netrw_winsize = 25
+" let g:netrw_list_hide= '.*\.swp$,.*\.pyc$'
+"
+" " Manage toggle explorer
+" let g:NetrwIsOpen=0
+" function! ToggleNetrw()
+"     if g:NetrwIsOpen
+"         let i = bufnr("$")
+"         while (i >= 1)
+"             if (getbufvar(i, "&filetype") == "netrw")
+"                 silent exe "bwipeout " . i
+"             endif
+"             let i-=1
+"         endwhile
+"         let g:NetrwIsOpen=0
+"     else
+"         let g:NetrwIsOpen=1
+"         silent Lexplore
+"     endif
+" endfunction
+"
+" Setup nerdtree
+let NERDTreeDirArrows=1
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" Manage toggle explorer
-let g:NetrwIsOpen=0
-function! ToggleNetrw()
-    if g:NetrwIsOpen
-        let i = bufnr("$")
-        while (i >= 1)
-            if (getbufvar(i, "&filetype") == "netrw")
-                silent exe "bwipeout " . i
-            endif
-            let i-=1
-        endwhile
-        let g:NetrwIsOpen=0
+" Toggle nerd tree
+function! ToggleNerdTree()
+    if g:NERDTree.ExistsForTab()
+        if !g:NERDTree.IsOpen()
+            NERDTreeFind
+        else
+            call g:NERDTree.Close()
+        endif
     else
-        let g:NetrwIsOpen=1
-        silent Lexplore
+        NERDTreeFind
     endif
 endfunction
+
+let NERDTreeIgnore = ['\.pyc$']
 
 "Keymaps
 
@@ -222,4 +251,7 @@ map <leader>r :call LanguageClient#textDocument_references()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 
 " File explorer
-map <leader>e :call ToggleNetrw()<CR>
+" map <leader>e :call ToggleNetrw()<CR>
+" map <leader>r :NERDTreeFind<CR>
+" map <leader>r :NERDTreeToggle<CR>
+map <leader>e :call ToggleNerdTree()<CR>
