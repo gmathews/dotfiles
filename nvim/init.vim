@@ -30,13 +30,15 @@ Plug 'scrooloose/nerdtree'
 Plug 'sheerun/vim-polyglot'
 
 " Theme
-Plug 'morhetz/gruvbox'
+Plug 'joshdick/onedark.vim'
 
 " Status line
 Plug 'vim-airline/vim-airline'
 
 "Fuzzy finding
 Plug 'cloudhead/neovim-fuzzy'
+
+Plug 'tmux-plugins/vim-tmux-focus-events'
 
 call plug#end()
 
@@ -49,14 +51,14 @@ inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<Up>"
 " Setup theme
 set termguicolors
 set background=dark
-colorscheme gruvbox
+colorscheme onedark
 
 " Make commands easier
 set showcmd
 let mapleader=","
 
 " Setup spelling
-set spell spelllang=en_us
+set spelllang=en_us
 " Ruler to encourage files to have a fixed width
 set colorcolumn=100
 
