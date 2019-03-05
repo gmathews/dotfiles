@@ -51,6 +51,7 @@ inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<Up>"
 " Setup theme
 set termguicolors
 set background=dark
+let g:onedark_terminal_italics=1
 colorscheme onedark
 
 " Make commands easier
@@ -77,6 +78,14 @@ let g:airline#extensions#tabline#buffer_min_count = 2
 let g:airline#extensions#virtualenv#enabled = 0
 
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#auto_complete_delay = 0
+let g:deoplete#auto_complete_start_length = 1
+let g:deoplete#enable_camel_case = 0
+let g:deoplete#enable_ignore_case = 0
+let g:deoplete#enable_refresh_always = 0
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#file#enable_buffer_path = 1
+let g:deoplete#max_list = 10000
 " Ignore most sources
 let g:deoplete#sources = {}
 let g:deoplete#sources._ = ['LanguageClient']
@@ -153,6 +162,15 @@ if executable('javascript-typescript-stdio')
 else
   echo "javascript-typescript-stdio not installed!\n"
   :cq
+endif
+if executable('javascript-typescript-stdio')
+  let g:LanguageClient_serverCommands.cs = ['javascript-typescript-stdio']
+  " Use LanguageServer for omnifunc completion
+  autocmd FileType cs setlocal omnifunc=LanguageClient#complete
+endif
+if executable('clangd')
+    let g:LanguageClient_serverCommands.cpp = ['clangd']
+    autocmd FileType cpp setlocal omnifunc=LanguageClient#complete
 endif
 
 " Search within subfolders by default
