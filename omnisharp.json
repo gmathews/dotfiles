@@ -1,14 +1,23 @@
 {
-    "dotnet": {
-        "alias": "default",
-        "projects": "**/*.csproj",
-        "enablePackageRestore": true,
-        "packageRestoreTimeout": "180"
-    },
     "formattingOptions": {
         "newLine": "\n",
         "useTabs": true,
         "tabSize": 4,
-        "indentationSize": 4
+        "indentationSize": 4,
+        "NewLinesForBracesInTypes": true,
+        "NewLinesForBracesInMethods": true,
+        "NewLinesForBracesInProperties": false,
+        "NewLinesForBracesInAccessors": false,
+        "NewLinesForBracesInAnonymousMethods": false,
+        "NewLinesForBracesInControlBlocks": false,
+        "NewLinesForBracesInAnonymousTypes": false,
+        "NewLinesForBracesInObjectCollectionArrayInitializers": false,
+        "NewLinesForBracesInLambdaExpressionBody": false,
+        "NewLineForElse": true,
+        "NewLineForCatch": true,
+        "NewLineForFinally": true,
+        "NewLineForMembersInObjectInit": false,
+        "NewLineForMembersInAnonymousTypes": false,
+        "NewLineForClausesInQuery": false
     }
 }
