@@ -52,7 +52,7 @@ bindkey "^[[A" history-beginning-search-backward
 bindkey "^[[B" history-beginning-search-forward
 
 USER_BASE_PATH=$(python3 -m site --user-base)
-export PATH=$PATH:$USER_BASE_PATH/bin:~/.composer/vendor/bin
+export PATH=/usr/local/opt/ruby/bin:$PATH:$USER_BASE_PATH/bin:~/.composer/vendor/bin
 
 if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
 
