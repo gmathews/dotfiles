@@ -5,7 +5,7 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
-Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
+Plug 'OmniSharp/omnisharp-vim'
 " (Optional) Multi-entry selection UI.
 Plug 'junegunn/fzf'
 
@@ -40,6 +40,12 @@ Plug 'vim-airline/vim-airline'
 Plug 'cloudhead/neovim-fuzzy'
 
 Plug 'tmux-plugins/vim-tmux-focus-events'
+
+" Format typescript automatically
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+  " \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 call plug#end()
 
@@ -92,6 +98,7 @@ let g:deoplete#max_list = 10000
 " Ignore most sources
 let g:deoplete#sources = {}
 let g:deoplete#sources._ = ['LanguageClient']
+let g:deoplete#sources.cs = ['omni', 'LanguageClient']
 " Disable the candidates in Comment/String syntaxes.
 call deoplete#custom#source('_',
             \ 'disabled_syntaxes', ['Comment', 'String'])
@@ -155,10 +162,20 @@ let g:LanguageClient_autoStart = 1
 " Use Ale for linting
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_save = 1
+let g:ale_linters = {
+            \ 'cs': ['OmniSharp'],
+            \ 'php': ['langserver', 'phpcs'],
+            \ 'typescript': ['tslint', 'tsserver'],
+            \}
+let g:ale_php_phpcs_standard = 'VariableAnalysis,PSR2'
+let g:OmniSharp_highlight_types = 1
+autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
+autocmd FileType cs setlocal noexpandtab
+autocmd FileType cs setlocal nolist
 let g:LanguageClient_diagnosticsEnable = 0
-let g:LanguageClient_loggingLevel = 'INFO'
-let g:LanguageClient_loggingFile =  expand('~/LanguageClient.log')
-let g:LanguageClient_serverStderr = expand('~/LanguageServer.log')
+" let g:LanguageClient_loggingLevel = 'INFO'
+" let g:LanguageClient_loggingFile =  expand('~/LanguageClient.log')
+" let g:LanguageClient_serverStderr = expand('~/LanguageServer.log')
 
 " Minimal LSP configuration for JavaScript
 let g:LanguageClient_serverCommands = {}
@@ -172,7 +189,7 @@ else
 endif
 " Minimal LSP configuration for c#
 if executable('mono')
-  let g:LanguageClient_serverCommands.cs = ['mono', '~/.omnisharp/OmniSharp.exe', '--languageserver', '-v']
+  let g:LanguageClient_serverCommands.cs = ['mono', '~/.omnisharp/OmniSharp.exe', '--languageserver']
   let g:LanguageClient_rootMarkers = {
               \ 'cs': ['*.sln'],
               \ }
@@ -186,6 +203,22 @@ if executable('clangd')
 else
   echo "clangd not installed!\n"
 endif
+if executable('php')
+    let g:LanguageClient_serverCommands.php = ['php', '~/.composer/vendor/bin/php-language-server.php']
+else
+  echo "php not installed!\n"
+endif
+if executable('typescript-language-server')
+    let g:LanguageClient_serverCommands.typescript = ['typescript-language-server', '--stdio']
+    autocmd FileType typescript setlocal omnifunc=LanguageClient#complete
+else
+  echo "tsserver not installed!\n"
+endif
+
+" Autoformatting
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 " Search within subfolders by default
 set path+=**
@@ -229,6 +262,10 @@ if executable('ag')
   set grepprg=ag\ --vimgrep\ $*
   set grepformat=%f:%l:%c:%m
 endif
+
+" Use Ag to grep and open the quickfix
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+" nnoremap \ :Ag<SPACE>
 
 " No need for nerdtree?
 " let g:netrw_banner = 0
@@ -290,3 +327,6 @@ nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
 " map <leader>r :NERDTreeFind<CR>
 " map <leader>r :NERDTreeToggle<CR>
 map <leader>e :call ToggleNerdTree()<CR>
+
+"Full file path to checkout files
+nnoremap <leader>p :let @*=expand("%:p")<CR>
