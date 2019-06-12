@@ -32,6 +32,7 @@ Plug 'sheerun/vim-polyglot'
 " Theme
 Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
+Plug 'crusoexia/vim-monokai'
 
 " Status line
 Plug 'vim-airline/vim-airline'
@@ -44,8 +45,7 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 " Format typescript automatically
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
-  \ 'for': ['typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
-  " \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 call plug#end()
 
@@ -60,8 +60,9 @@ set termguicolors
 set background=dark
 let g:onedark_terminal_italics=1
 let g:gruvbox_italic=1
-colorscheme onedark
+" colorscheme onedark
 " colorscheme gruvbox
+colorscheme monokai
 
 " Make commands easier
 set showcmd
@@ -217,7 +218,7 @@ endif
 
 " Autoformatting
 let g:prettier#autoformat = 0
-autocmd BufWritePre *.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+autocmd BufWritePre *.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.html PrettierAsync
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 " Search within subfolders by default

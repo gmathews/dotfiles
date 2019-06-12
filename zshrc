@@ -56,5 +56,7 @@ export PATH=/usr/local/opt/ruby/bin:$PATH:$USER_BASE_PATH/bin:~/.composer/vendor
 
 if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
 
+export DOCKER_BUILDKIT=1
+
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
