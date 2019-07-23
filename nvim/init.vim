@@ -30,8 +30,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'sheerun/vim-polyglot'
 
 " Theme
-Plug 'joshdick/onedark.vim'
-Plug 'morhetz/gruvbox'
 Plug 'crusoexia/vim-monokai'
 
 " Status line
@@ -58,10 +56,6 @@ inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<Up>"
 " Setup theme
 set termguicolors
 set background=dark
-let g:onedark_terminal_italics=1
-let g:gruvbox_italic=1
-" colorscheme onedark
-" colorscheme gruvbox
 colorscheme monokai
 
 " Make commands easier
@@ -256,11 +250,10 @@ let g:indent_guides_guide_size = 1
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
 
-" The Silver Searcher
-if executable('ag')
-  " Use ag over grep
-  " set grepprg=ag\ --nogroup\ --nocolor
-  set grepprg=ag\ --vimgrep\ $*
+" ripgrep
+if executable('rg')
+  " Use ripgrep over grep
+  set grepprg=rg\ --vimgrep\ $*
   set grepformat=%f:%l:%c:%m
 endif
 
