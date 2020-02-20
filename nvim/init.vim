@@ -159,10 +159,9 @@ let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_save = 1
 let g:ale_linters = {
             \ 'cs': ['OmniSharp'],
-            \ 'php': ['langserver', 'phpcs'],
+            \ 'php': ['psalm', 'langserver'],
             \ 'typescript': ['tslint', 'tsserver'],
             \}
-let g:ale_php_phpcs_standard = 'VariableAnalysis,PSR2'
 let g:OmniSharp_highlight_types = 1
 autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 autocmd FileType cs setlocal noexpandtab

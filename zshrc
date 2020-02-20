@@ -22,31 +22,16 @@ bindkey -v
 alias ls='ls -G'
 alias grep='grep --color=always'
 export GREP_COLOR='1;37;47'
-alias mux="tmuxinator"
+
 # Use vim
 export EDITOR=vim
 export VISUAL=vim
 # Nice prompt
+export PURE_PROMPT_SYMBOL=💰
 autoload -U promptinit; promptinit
 prompt pure
 
-# VIM_PROMPT="❯"
-# PROMPT='%(?.%F{magenta}.%F{red})${VIM_PROMPT}%f '
-#
-# prompt_pure_update_vim_prompt() {
-#     zle || {
-#         print "error: pure_update_vim_prompt must be called when zle is active"
-#         return 1
-#     }
-#     VIM_PROMPT=${${KEYMAP/vicmd/❮}/(main|viins)/❯}
-#     zle .reset-prompt
-# }
-#
-# function zle-line-init zle-keymap-select {
-#     prompt_pure_update_vim_prompt
-# }
-# zle -N zle-line-init
-# zle -N zle-keymap-select
+alias mux="tmuxinator"
 
 # Search current history
 bindkey "^[[A" history-beginning-search-backward
@@ -54,10 +39,8 @@ bindkey "^[[B" history-beginning-search-forward
 
 USER_BASE_PATH=$(python3 -m site --user-base)
 export PATH=/usr/local/opt/ruby/bin:$PATH:$USER_BASE_PATH/bin:~/.composer/vendor/bin
-
-if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
+export PATH="/usr/local/opt/mysql-client@5.7/bin:$PATH"
 
 export DOCKER_BUILDKIT=1
 
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
