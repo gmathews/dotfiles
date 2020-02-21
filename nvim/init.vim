@@ -1,11 +1,11 @@
 call plug#begin()
 " Autocomplete
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-Plug 'OmniSharp/omnisharp-vim'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
 " (Optional) Multi-entry selection UI.
 Plug 'junegunn/fzf'
 
@@ -81,22 +81,22 @@ let g:airline#extensions#tabline#buffer_min_count = 2
 " let g:airline#extensions#tabline#show_tabs = 0
 let g:airline#extensions#virtualenv#enabled = 0
 
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#auto_complete_delay = 0
-let g:deoplete#auto_complete_start_length = 1
-let g:deoplete#enable_camel_case = 0
-let g:deoplete#enable_ignore_case = 0
-let g:deoplete#enable_refresh_always = 0
-let g:deoplete#enable_smart_case = 1
-let g:deoplete#file#enable_buffer_path = 1
-let g:deoplete#max_list = 10000
-" Ignore most sources
-let g:deoplete#sources = {}
-let g:deoplete#sources._ = ['LanguageClient']
-let g:deoplete#sources.cs = ['omni', 'LanguageClient']
-" Disable the candidates in Comment/String syntaxes.
-call deoplete#custom#source('_',
-            \ 'disabled_syntaxes', ['Comment', 'String'])
+" let g:deoplete#enable_at_startup = 1
+" let g:deoplete#auto_complete_delay = 0
+" let g:deoplete#auto_complete_start_length = 1
+" let g:deoplete#enable_camel_case = 0
+" let g:deoplete#enable_ignore_case = 0
+" let g:deoplete#enable_refresh_always = 0
+" let g:deoplete#enable_smart_case = 1
+" let g:deoplete#file#enable_buffer_path = 1
+" let g:deoplete#max_list = 10000
+" " Ignore most sources
+" let g:deoplete#sources = {}
+" let g:deoplete#sources._ = ['LanguageClient']
+" let g:deoplete#sources.cs = ['omni', 'LanguageClient']
+" " Disable the candidates in Comment/String syntaxes.
+" call deoplete#custom#source('_',
+"             \ 'disabled_syntaxes', ['Comment', 'String'])
 " Close preview when leaving insert or completion is done
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
@@ -159,7 +159,7 @@ let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_save = 1
 let g:ale_linters = {
             \ 'cs': ['OmniSharp'],
-            \ 'php': ['psalm', 'langserver'],
+            \ 'php': ['langserver', 'psalm'],
             \ 'typescript': ['tslint', 'tsserver'],
             \}
 let g:OmniSharp_highlight_types = 1
