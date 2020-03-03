@@ -31,6 +31,7 @@ Plug 'sheerun/vim-polyglot'
 
 " Theme
 Plug 'crusoexia/vim-monokai'
+Plug 'sainnhe/gruvbox-material'
 
 " Status line
 Plug 'vim-airline/vim-airline'
@@ -47,16 +48,21 @@ Plug 'prettier/vim-prettier', {
 
 call plug#end()
 
-" deoplete tab-complete
+" asyncomplete tab-complete
 " inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 " inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
 inoremap <expr><C-j> pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<Up>"
+" Close preview when leaving insert or completion is done
+autocmd! InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " Setup theme
 set termguicolors
 set background=dark
-colorscheme monokai
+" colorscheme monokai
+let g:gruvbox_material_background = 'hard'
+colorscheme gruvbox-material
 
 " Make commands easier
 set showcmd
@@ -80,25 +86,8 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#buffer_min_count = 2
 " let g:airline#extensions#tabline#show_tabs = 0
 let g:airline#extensions#virtualenv#enabled = 0
-
-" let g:deoplete#enable_at_startup = 1
-" let g:deoplete#auto_complete_delay = 0
-" let g:deoplete#auto_complete_start_length = 1
-" let g:deoplete#enable_camel_case = 0
-" let g:deoplete#enable_ignore_case = 0
-" let g:deoplete#enable_refresh_always = 0
-" let g:deoplete#enable_smart_case = 1
-" let g:deoplete#file#enable_buffer_path = 1
-" let g:deoplete#max_list = 10000
-" " Ignore most sources
-" let g:deoplete#sources = {}
-" let g:deoplete#sources._ = ['LanguageClient']
-" let g:deoplete#sources.cs = ['omni', 'LanguageClient']
-" " Disable the candidates in Comment/String syntaxes.
-" call deoplete#custom#source('_',
-"             \ 'disabled_syntaxes', ['Comment', 'String'])
-" Close preview when leaving insert or completion is done
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+" let g:airline_section_warning = '%{lsp#get_buffer_diagnostics_counts()["warning"]}'
+" let g:airline_section_error = '%{lsp#get_buffer_diagnostics_counts()["error"]}%{lsp#get_buffer_first_error_line()? "-".lsp#get_buffer_first_error_line():""}'
 
 " Nice things for editing
 syntax on
@@ -152,62 +141,19 @@ else
     set mouse=a
 endif
 
-" Automatically start language servers.
-let g:LanguageClient_autoStart = 1
 " Use Ale for linting
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_save = 1
 let g:ale_linters = {
             \ 'cs': ['OmniSharp'],
-            \ 'php': ['langserver', 'psalm'],
+            \ 'php': ['langserver'],
             \ 'typescript': ['tslint', 'tsserver'],
             \}
+" \ 'php': ['langserver', 'psalm'],
 let g:OmniSharp_highlight_types = 1
 autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 autocmd FileType cs setlocal noexpandtab
 autocmd FileType cs setlocal nolist
-let g:LanguageClient_diagnosticsEnable = 0
-" let g:LanguageClient_loggingLevel = 'INFO'
-" let g:LanguageClient_loggingFile =  expand('~/LanguageClient.log')
-" let g:LanguageClient_serverStderr = expand('~/LanguageServer.log')
-
-" Minimal LSP configuration for JavaScript
-let g:LanguageClient_serverCommands = {}
-if executable('javascript-typescript-stdio')
-  let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
-  " Use LanguageServer for omnifunc completion
-  autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
-else
-  echo "javascript-typescript-stdio not installed!\n"
-  :cq
-endif
-" Minimal LSP configuration for c#
-if executable('mono')
-  let g:LanguageClient_serverCommands.cs = ['mono', '~/.omnisharp/OmniSharp.exe', '--languageserver']
-  let g:LanguageClient_rootMarkers = {
-              \ 'cs': ['*.sln'],
-              \ }
-else
-  echo "omnisharp-roslyn not installed!\n"
-endif
-" Minimal LSP configuration for c/c++
-if executable('clangd')
-    let g:LanguageClient_serverCommands.cpp = ['clangd']
-    autocmd FileType cpp setlocal omnifunc=LanguageClient#complete
-else
-  echo "clangd not installed!\n"
-endif
-if executable('php')
-    let g:LanguageClient_serverCommands.php = ['php', '~/.composer/vendor/bin/php-language-server.php']
-else
-  echo "php not installed!\n"
-endif
-if executable('typescript-language-server')
-    let g:LanguageClient_serverCommands.typescript = ['typescript-language-server', '--stdio']
-    autocmd FileType typescript setlocal omnifunc=LanguageClient#complete
-else
-  echo "tsserver not installed!\n"
-endif
 
 " Autoformatting
 let g:prettier#autoformat = 0
@@ -308,12 +254,22 @@ let NERDTreeIgnore = ['\.pyc$']
 
 " Fuzzy finder
 map <leader>s :FuzzyOpen<CR>
-
 " Explore symbols
-map <leader>a :call LanguageClient#textDocument_documentSymbol()<CR>
-map <leader>r :call LanguageClient#textDocument_references()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    nmap <buffer> gd <plug>(lsp-definition)
+    " refer to doc to add more commands
+    nmap <buffer> <leader>a <plug>(lsp-references)
+    nmap <buffer> <leader>r <plug>(lsp-rename)
+    nmap <buffer> gh <plug>(lsp-hover)
+endfunction
+
+augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
 
 " File explorer
 " map <leader>e :call ToggleNetrw()<CR>
