@@ -51,7 +51,7 @@ call plug#end()
 " asyncomplete tab-complete
 " inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 " inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
 inoremap <expr><C-j> pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<Up>"
 " Close preview when leaving insert or completion is done
@@ -145,15 +145,11 @@ endif
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_save = 1
 let g:ale_linters = {
-            \ 'cs': ['OmniSharp'],
+            \ 'cs': ['langserver'],
             \ 'php': ['langserver'],
             \ 'typescript': ['tslint', 'tsserver'],
             \}
 " \ 'php': ['langserver', 'psalm'],
-let g:OmniSharp_highlight_types = 1
-autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
-autocmd FileType cs setlocal noexpandtab
-autocmd FileType cs setlocal nolist
 
 " Autoformatting
 let g:prettier#autoformat = 0

@@ -24,8 +24,8 @@ alias grep='grep --color=always'
 export GREP_COLOR='1;37;47'
 
 # Use vim
-export EDITOR=vim
-export VISUAL=vim
+export EDITOR=nvim
+export VISUAL=nvim
 # Nice prompt
 export PURE_PROMPT_SYMBOL=💰
 autoload -U promptinit; promptinit
@@ -36,11 +36,5 @@ alias mux="tmuxinator"
 # Search current history
 bindkey "^[[A" history-beginning-search-backward
 bindkey "^[[B" history-beginning-search-forward
-
-USER_BASE_PATH=$(python3 -m site --user-base)
-export PATH=/usr/local/opt/ruby/bin:$PATH:$USER_BASE_PATH/bin:~/.composer/vendor/bin
-export PATH="/usr/local/opt/mysql-client@5.7/bin:$PATH"
-
-export DOCKER_BUILDKIT=1
 
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
