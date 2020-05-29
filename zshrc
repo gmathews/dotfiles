@@ -3,7 +3,7 @@
 zstyle ':completion:*' completer _complete _ignored
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' matcher-list ''
-zstyle :compinstall filename '/Users/gmathews/.zshrc'
+zstyle :compinstall filename '/Users/george/.zshrc'
 
 fpath=(~/.zsh/completion $fpath)
 
