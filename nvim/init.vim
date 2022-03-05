@@ -70,6 +70,7 @@ let mapleader=","
 
 " Setup spelling
 set spelllang=en_us
+set spell
 " Ruler to encourage files to have a fixed width
 set colorcolumn=100
 
@@ -150,11 +151,6 @@ let g:ale_linters = {
             \ 'typescript': ['tslint', 'tsserver'],
             \}
 " \ 'php': ['langserver', 'psalm'],
-
-" Autoformatting
-let g:prettier#autoformat = 0
-autocmd BufWritePre *.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.html PrettierAsync
-" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 " Search within subfolders by default
 set path+=**
@@ -275,3 +271,6 @@ map <leader>e :call ToggleNerdTree()<CR>
 
 "Full file path to checkout files
 nnoremap <leader>p :let @*=expand("%:p")<CR>
+
+" LaTeX wordcount
+:command Texcount !texcount '%'
