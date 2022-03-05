@@ -1,68 +1,72 @@
+
+" Plugins {{{
 call plug#begin()
-" Autocomplete
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-
-" (Optional) Multi-entry selection UI.
-Plug 'junegunn/fzf'
-
-" Indent lines
-Plug 'nathanaelkane/vim-indent-guides'
-
-" Toggle comments with gcc
-Plug 'tomtom/tcomment_vim'
-
-" For git blame and shit
-Plug 'tpope/vim-fugitive'
-" Indicate git changes on the side
-Plug 'mhinz/vim-signify'
-
-" Syntax checking
-Plug 'w0rp/ale'
-
-" Fancy file explorer
-Plug 'scrooloose/nerdtree'
-
-" Random syntax highlighting
-Plug 'sheerun/vim-polyglot'
-
-" Theme
-Plug 'crusoexia/vim-monokai'
-Plug 'sainnhe/gruvbox-material'
-
-" Status line
-Plug 'vim-airline/vim-airline'
-
-"Fuzzy finding
+" Fuzzy finding
 Plug 'cloudhead/neovim-fuzzy'
 
-Plug 'tmux-plugins/vim-tmux-focus-events'
+" Better syntax highlighting
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
-" Format typescript automatically
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+" LSP setup/support
+Plug 'neovim/nvim-lspconfig'
 
+" Autocompletion
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'L3MON4D3/LuaSnip'
+
+" Linter for non LSP linting
+Plug 'mfussenegger/nvim-lint'
+
+" Theme
+Plug 'sainnhe/gruvbox-material'
+Plug 'marko-cerovac/material.nvim'
+Plug 'bluz71/vim-nightfly-guicolors'
+Plug 'glepnir/zephyr-nvim'
+
+" Indent lines
+Plug 'lukas-reineke/indent-blankline.nvim'
+
+" Fancy file explorer
+" Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
+
+" For git blame and shit
+Plug 'nvim-lua/plenary.nvim'
+Plug 'lewis6991/gitsigns.nvim'
+
+" Toggle comments with gcc
+Plug 'numToStr/Comment.nvim'
+
+
+" Status line
+Plug 'nvim-lualine/lualine.nvim'
 call plug#end()
+" }}}
 
-" asyncomplete tab-complete
-" inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-" inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<tab>"
-" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
-inoremap <expr><C-j> pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<Up>"
-" Close preview when leaving insert or completion is done
-autocmd! InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
-" Setup theme
+" Colors {{{
+syntax on
 set termguicolors
 set background=dark
-" colorscheme monokai
+let g:material_style = "oceanic"
 let g:gruvbox_material_background = 'hard'
 colorscheme gruvbox-material
+
+" Highlight unwanted chars
+set list
+set listchars=tab:▸\ ,trail:▫,extends:→
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+
+" Ruler to encourage files to have a fixed width
+set colorcolumn=100
+" }}}
+
 
 " Make commands easier
 set showcmd
@@ -70,28 +74,12 @@ let mapleader=","
 
 " Setup spelling
 set spelllang=en_us
-set spell
-" Ruler to encourage files to have a fixed width
-set colorcolumn=100
+" set spell
 
 " Make commenting nicer
 autocmd FileType * setlocal formatoptions-=r formatoptions-=o formatoptions+=j
 
-" Setup Statusline
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#hunks#non_zero_only = 1
-let g:airline_section_y = ""
-let g:airline_section_x = ""
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tabline#buffer_min_count = 2
-" let g:airline#extensions#tabline#show_tabs = 0
-let g:airline#extensions#virtualenv#enabled = 0
-" let g:airline_section_warning = '%{lsp#get_buffer_diagnostics_counts()["warning"]}'
-" let g:airline_section_error = '%{lsp#get_buffer_diagnostics_counts()["error"]}%{lsp#get_buffer_first_error_line()? "-".lsp#get_buffer_first_error_line():""}'
-
 " Nice things for editing
-syntax on
 set number
 set hidden
 set wrap        " wrap lines
@@ -113,6 +101,7 @@ set hlsearch      " highlight search terms
 set incsearch     " show search matches as you type
 set clipboard=unnamed " yank and paste with the system clipboard
 set autoread
+" Refresh files if git changed them
 au FocusGained * :checktime
 set nobackup
 set nowritebackup
@@ -125,15 +114,8 @@ set cursorline
 set wildmenu
 set wildmode=longest,list,full
 
-" Highlight unwanted chars
-set list
-set listchars=tab:▸\ ,trail:▫,extends:→
-highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-autocmd BufWinLeave * call clearmatches()
+set completeopt=menuone,noselect
+
 
 filetype plugin indent on
 
@@ -141,16 +123,6 @@ if has('gui_running')
 else
     set mouse=a
 endif
-
-" Use Ale for linting
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_save = 1
-let g:ale_linters = {
-            \ 'cs': ['langserver'],
-            \ 'php': ['langserver'],
-            \ 'typescript': ['tslint', 'tsserver'],
-            \}
-" \ 'php': ['langserver', 'psalm'],
 
 " Search within subfolders by default
 set path+=**
@@ -168,24 +140,6 @@ set wildignore+=*.gif,*.jpg,*.jpeg,*.otf,*.png,*.svg,*.ttf
 " Ignore case when completing
 set wildignorecase
 
-" Node.js stuff
-au BufNewFile,Bufread *.js set filetype=javascript
-" au Filetype javascript setl sw=2 sts=2 et
-let g:javascript_plugin_jsdoc = 1
-
-" Python stuff
-autocmd BufRead,BufNewFile *.py let python_highlight_all=1
-let g:python3_host_prog = '/usr/local/bin/python3'
-let g:loaded_python_provider = 1
-
-" Setup signify
-let g:signify_update_on_focusgained = 1
-
-" Setup ident guides
-let g:indent_guides_start_level = 2
-let g:indent_guides_guide_size = 1
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
 
 " ripgrep
 if executable('rg')
@@ -194,83 +148,158 @@ if executable('rg')
   set grepformat=%f:%l:%c:%m
 endif
 
-" Use Ag to grep and open the quickfix
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-" nnoremap \ :Ag<SPACE>
+" LaTeX wordcount
+:command Texcount !texcount '%'
 
-" No need for nerdtree?
-" let g:netrw_banner = 0
-" let g:netrw_liststyle = 3
-" let g:netrw_browse_split = 4
-" let g:netrw_winsize = 25
-" let g:netrw_list_hide= '.*\.swp$,.*\.pyc$'
-"
-" " Manage toggle explorer
-" let g:NetrwIsOpen=0
-" function! ToggleNetrw()
-"     if g:NetrwIsOpen
-"         let i = bufnr("$")
-"         while (i >= 1)
-"             if (getbufvar(i, "&filetype") == "netrw")
-"                 silent exe "bwipeout " . i
-"             endif
-"             let i-=1
-"         endwhile
-"         let g:NetrwIsOpen=0
-"     else
-"         let g:NetrwIsOpen=1
-"         silent Lexplore
-"     endif
-" endfunction
-"
-" Setup nerdtree
-let NERDTreeDirArrows=1
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" LSP, completion & Treesitter {{{
+lua <<EOF
+-- LSP settings
+local lspconfig = require 'lspconfig'
+local on_attach = function(_, bufnr)
+local opts = { noremap = true, silent = true }
+--vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+--vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+--vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
+vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+end
 
-" Toggle nerd tree
-function! ToggleNerdTree()
-    if g:NERDTree.ExistsForTab()
-        if !g:NERDTree.IsOpen()
-            NERDTreeFind
-        else
-            call g:NERDTree.Close()
-        endif
+-- nvim-cmp supports additional completion capabilities
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+-- Enable the following language servers
+local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver' }
+for _, lsp in ipairs(servers) do
+    lspconfig[lsp].setup {
+        on_attach = on_attach,
+        capabilities = capabilities,
+        }
+end
+
+-- luasnip setup
+local luasnip = require 'luasnip'
+
+-- nvim-cmp setup
+local cmp = require 'cmp'
+cmp.setup {
+    snippet = {
+        expand = function(args)
+        luasnip.lsp_expand(args.body)
+    end,
+    },
+mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm {
+        behavior = cmp.ConfirmBehavior.Replace,
+        select = true,
+        },
+    ['<Tab>'] = function(fallback)
+    if cmp.visible() then
+        cmp.select_next_item()
+    elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
     else
-        NERDTreeFind
-    endif
-endfunction
+        fallback()
+    end
+end,
+['<S-Tab>'] = function(fallback)
+if cmp.visible() then
+    cmp.select_prev_item()
+elseif luasnip.jumpable(-1) then
+    luasnip.jump(-1)
+else
+    fallback()
+end
+    end,
+    },
+sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+    },
+}
+require'nvim-treesitter.configs'.setup {
+ensure_installed = "maintained",
+highlight = {
+enable = true,
+},
+indent = {
+enable = true
+}
+  }
+EOF
+" }}}
 
-let NERDTreeIgnore = ['\.pyc$']
+" other lua setup calls {{{
+lua <<EOF
+require('Comment').setup()
+require('lualine').setup {
+    options = {
+        theme = 'auto'
+        },
+    sections = {
+        lualine_x = {'filetype'},
+        },
+    tabline = {
+        lualine_a = { {'buffers', show_filename_only = false, mode = 2, max_length = vim.o.columns }}
+        }
+    }
 
-"Keymaps
+require'nvim-tree'.setup {
+    update_focused_file = {
+    enable = true
+    },
+filters = {
+    dotfiles = true,
+    custom = {"node_modules"}
+    }
+}
+
+require('gitsigns').setup()
+
+require("indent_blankline").setup {
+    -- for example, context is off by default, use this to turn it on
+    show_current_context = true,
+    show_current_context_start = false,
+    }
+
+-- lint setup
+require('lint').linters_by_ft = {
+    javascript = {'eslint',}
+    }
+
+EOF
+" }}}
+
+autocmd BufWinEnter,BufWritePost *.js lua require('lint').try_lint()
+
+" Keymaps {{{
 
 " Fuzzy finder
 map <leader>s :FuzzyOpen<CR>
-" Explore symbols
-function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
-    nmap <buffer> gd <plug>(lsp-definition)
-    " refer to doc to add more commands
-    nmap <buffer> <leader>a <plug>(lsp-references)
-    nmap <buffer> <leader>r <plug>(lsp-rename)
-    nmap <buffer> gh <plug>(lsp-hover)
-endfunction
-
-augroup lsp_install
-    au!
-    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
 
 " File explorer
-" map <leader>e :call ToggleNetrw()<CR>
-" map <leader>r :NERDTreeFind<CR>
-" map <leader>r :NERDTreeToggle<CR>
-map <leader>e :call ToggleNerdTree()<CR>
+nnoremap <leader>e :NvimTreeToggle<CR>
+
+" Git blame
 
 "Full file path to checkout files
 nnoremap <leader>p :let @*=expand("%:p")<CR>
 
-" LaTeX wordcount
-:command Texcount !texcount '%'
+" }}}
+
+" vim:foldmethod=marker:foldlevel=0

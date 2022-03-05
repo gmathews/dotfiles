@@ -22,6 +22,7 @@ bindkey -v
 alias ls='ls -G'
 alias grep='grep --color=always'
 export GREP_COLOR='1;37;47'
+alias diff='colordiff'
 
 # Use vim
 export EDITOR=nvim
@@ -37,4 +38,7 @@ alias mux="tmuxinator"
 bindkey "^[[A" history-beginning-search-backward
 bindkey "^[[B" history-beginning-search-forward
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Wake BMO from sleep to ssh in
+alias wakeBMO='wakeonlan -i 192.168.1.255 1c:69:7a:62:59:cb'
+
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
