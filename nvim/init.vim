@@ -50,7 +50,10 @@ syntax on
 set termguicolors
 set background=dark
 let g:material_style = "oceanic"
-let g:gruvbox_material_background = 'hard'
+" let g:gruvbox_material_background = 'hard'
+let g:gruvbox_material_better_performance = 1
+let g:gruvbox_material_statusline_style = 'original'
+let g:gruvbox_material_palette = 'orginal'
 colorscheme gruvbox-material
 
 " Highlight unwanted chars
@@ -75,6 +78,8 @@ let mapleader=","
 " Setup spelling
 set spelllang=en_us
 " set spell
+autocmd FileType markdown setlocal spell
+autocmd FileType gitcommit setlocal spell
 
 " Make commenting nicer
 autocmd FileType * setlocal formatoptions-=r formatoptions-=o formatoptions+=j
@@ -115,7 +120,6 @@ set wildmenu
 set wildmode=longest,list,full
 
 set completeopt=menuone,noselect
-
 
 filetype plugin indent on
 
@@ -173,18 +177,24 @@ vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()
 vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
 end
 
--- nvim-cmp supports additional completion capabilities
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+-- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers.
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- Enable the following language servers
-local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver' }
+local servers = { 'clangd', 'rust_analyzer', 'pyright' }
 for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup {
         on_attach = on_attach,
         capabilities = capabilities,
         }
 end
+lspconfig.tsserver.setup({
+    handlers = {
+        ['textDocument/publishDiagnostics'] = function(...) end
+    },
+    on_attach = on_attach,
+    capabilities = capabilities,
+})
 
 -- luasnip setup
 local luasnip = require 'luasnip'
@@ -233,7 +243,7 @@ sources = {
     },
 }
 require'nvim-treesitter.configs'.setup {
-ensure_installed = "maintained",
+    ensure_installed = {"javascript", "jsdoc", "json"},
 highlight = {
 enable = true,
 },
@@ -255,7 +265,7 @@ require('lualine').setup {
         lualine_x = {'filetype'},
         },
     tabline = {
-        lualine_a = { {'buffers', show_filename_only = false, mode = 2, max_length = vim.o.columns }}
+        lualine_a = { {'buffers', show_filename_only = false, mode = 4, max_length = vim.o.columns }}
         }
     }
 
@@ -280,12 +290,15 @@ require("indent_blankline").setup {
 -- lint setup
 require('lint').linters_by_ft = {
     javascript = {'eslint',}
+    typescript = {'eslint',}
     }
 
 EOF
 " }}}
 
 autocmd BufWinEnter,BufWritePost *.js lua require('lint').try_lint()
+" autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+autocmd BufWinEnter,BufWritePost *.ts lua require('lint').try_lint()
 
 " Keymaps {{{
 
