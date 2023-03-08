@@ -289,7 +289,7 @@ require("indent_blankline").setup {
 
 -- lint setup
 require('lint').linters_by_ft = {
-    javascript = {'eslint',}
+    javascript = {'eslint',},
     typescript = {'eslint',}
     }
 
