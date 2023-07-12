@@ -29,10 +29,14 @@ Plug 'glepnir/zephyr-nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Fancy file explorer
-" Plug 'kyazdani42/nvim-web-devicons' " for file icons
-Plug 'kyazdani42/nvim-tree.lua'
+Plug 'nvim-tree/nvim-web-devicons' " for file icons
+Plug 'nvim-tree/nvim-tree.lua'
+
+" Code outline
+Plug 'simrat39/symbols-outline.nvim'
 
 " For git blame and shit
+Plug 'tpope/vim-fugitive'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 
@@ -163,18 +167,18 @@ local on_attach = function(_, bufnr)
 local opts = { noremap = true, silent = true }
 --vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
 vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
---vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
 --vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
---vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
 --vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
 --vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
 --vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
---vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
 vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
 vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
---vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 --vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
-vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+vim.cmd [[ command! Format execute 'lua vim.lsp.buf.format({async=true)' ]]
 end
 
 -- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers.
@@ -194,6 +198,11 @@ lspconfig.tsserver.setup({
     },
     on_attach = on_attach,
     capabilities = capabilities,
+})
+vim.diagnostic.config({
+    virtual_text = false,
+    signs = true,
+    float = { border = "single" },
 })
 
 -- luasnip setup
@@ -243,7 +252,7 @@ sources = {
     },
 }
 require'nvim-treesitter.configs'.setup {
-    ensure_installed = {"javascript", "jsdoc", "json"},
+    ensure_installed = {"javascript", "jsdoc", "json", "lua", "vim", "typescript"},
 highlight = {
 enable = true,
 },
@@ -251,6 +260,11 @@ indent = {
 enable = true
 }
   }
+require("symbols-outline").setup {
+    autofold_depth = 1,
+    width = 10,
+    auto_close = true
+}
 EOF
 " }}}
 
@@ -262,10 +276,11 @@ require('lualine').setup {
         theme = 'auto'
         },
     sections = {
+        lualine_c = { {'filename', path = 1} },
         lualine_x = {'filetype'},
         },
     tabline = {
-        lualine_a = { {'buffers', show_filename_only = false, mode = 4, max_length = vim.o.columns }}
+        lualine_a = { {'buffers', hide_filename_extensions = true, show_filename_only = false, mode = 4, max_length = vim.o.columns }}
         }
     }
 
@@ -298,17 +313,24 @@ EOF
 
 autocmd BufWinEnter,BufWritePost *.js lua require('lint').try_lint()
 " autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
-autocmd BufWinEnter,BufWritePost *.ts lua require('lint').try_lint()
+autocmd InsertLeave,BufWinEnter,BufWritePost *.ts lua require('lint').try_lint()
+autocmd InsertLeave,BufWritePost *.ts lua vim.lsp.buf.format()
+set updatetime=300
+autocmd CursorHold *.ts lua vim.diagnostic.open_float(0,{scope="cursor", focus=false})
 
 " Keymaps {{{
 
 " Fuzzy finder
-map <leader>s :FuzzyOpen<CR>
+map <leader>f :FuzzyOpen<CR>
 
 " File explorer
 nnoremap <leader>e :NvimTreeToggle<CR>
 
+" Symbol outline
+nnoremap <leader>s :SymbolsOutline<CR>
+
 " Git blame
+command Gblame Git blame
 
 "Full file path to checkout files
 nnoremap <leader>p :let @*=expand("%:p")<CR>

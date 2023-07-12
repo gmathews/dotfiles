@@ -33,6 +33,7 @@ autoload -U promptinit; promptinit
 prompt pure
 
 alias mux="tmuxinator"
+export PATH="$HOMEBREW_PREFIX/opt/ncurses/bin:$PATH"
 
 # Search current history
 bindkey "^[[A" history-beginning-search-backward
