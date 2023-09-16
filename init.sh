@@ -37,7 +37,7 @@ for source_rel in "${!symlinks[@]}"; do
     target="$home_dir/${symlinks[$source_rel]}"
 
     # Create the parent directories of the source file/directory if they don't exist
-    parent_dir="$(dirname "$source")"
+    parent_dir="$(dirname "$target")"
     mkdir -p "$parent_dir"
 
     # Create the symbolic link
