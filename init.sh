@@ -24,7 +24,7 @@ symlinks['zshrc']='.zshrc'
 symlinks['vimrc']='.vimrc'
 symlinks['kitty.conf']='.config/kitty/kitty.conf'
 symlinks['nvim/init.vim']='.config/nvim/init.vim'
-symlinks['vscode/settings.json']='Library/Application\ Support/Code/User/settings.json'
+symlinks['vscode/settings.json']='Library/Application Support/Code/User/settings.json'
 
 # Get your home directory
 home_dir="$HOME"
