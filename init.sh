@@ -31,19 +31,19 @@ home_dir="$HOME"
 
 # Loop through the associative array and create symbolic links
 for source_rel in "${!symlinks[@]}"; do
-    source="$PWD/$source_rel" # Construct the full source path
+    source_file="$PWD/$source_rel" # Construct the full source path
 
     # Construct the full target path starting with your home directory
-    target="$home_dir/${symlinks[$source_rel]}"
+    target_file="$home_dir/${symlinks[$source_rel]}"
 
     # Create the parent directories of the source file/directory if they don't exist
-    parent_dir="$(dirname "$target")"
+    parent_dir="$(dirname "$target_file")"
     mkdir -p "$parent_dir"
 
     # Create the symbolic link
-    ln -s "$target" "$source"
+    ln -s "$target_file" "$source_file"
 
-    echo "Created symbolic link: $source -> $target"
+    echo "Created symbolic link: $source_file -> $target_file"
 done
 
 echo "All symbolic links created successfully."
