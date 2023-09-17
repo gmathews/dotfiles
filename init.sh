@@ -11,14 +11,14 @@ typeset -A symlinks
 
 # Add your relative file-to-target mappings here
 symlinks=(
-  'gitconfig'='.gitconfig'
-  'gitignore_global'='.gitignore_global'
-  'tmux.conf'='.tmux.conf'
-  'zshrc'='.zshrc'
-  'vimrc'='.vimrc'
-  'kitty.conf'='.config/kitty/kitty.conf'
-  'nvim/init.vim'='.config/nvim/init.vim'
-  'vscode/settings.json'='Library/Application Support/Code/User/settings.json'
+  'gitconfig' '.gitconfig'
+  'gitignore_global' '.gitignore_global'
+  'tmux.conf' '.tmux.conf'
+  'zshrc' '.zshrc'
+  'vimrc' '.vimrc'
+  'kitty.conf' '.config/kitty/kitty.conf'
+  'nvim/init.vim' '.config/nvim/init.vim'
+  'vscode/settings.json' 'Library/Application Support/Code/User/settings.json'
 )
 
 # Get your home directory
