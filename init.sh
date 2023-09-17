@@ -36,7 +36,7 @@ for source_rel in "${(@k)symlinks}"; do
     mkdir -p "$parent_dir"
 
     # Create the symbolic link
-    ln -s "$target_file" "$source_file"
+    ln -s "$source_file" "$target_file"
 
     echo "Created symbolic link: $source_file -> $target_file"
 done
