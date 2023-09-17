@@ -43,30 +43,30 @@ done
 
 echo "All symbolic links created successfully."
 
-# # Install node
-# brew install fnm
-# fnm install 16
-#
-# # Install plugin manager for neovim
-# sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-#        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-#
-#
-# # Install a bunch of software
-# brew install git
-# brew install zsh
-# brew install pure
-# brew install zsh-syntax-highlighting
-# brew install tmux
-# brew install tmuxinator
-# brew install neovim
-#
-# # Setup terminal and fonts
-# brew install kitty
-# brew tap homebrew/cask-fonts && brew install font-fira-code-nerd-font
-#
-# # Nice stuff for git/neovim
-# brew install colordiff
-# brew install diff-so-fancy
-# brew install fzy
-# brew install ripgrep
+# Install node
+brew install fnm
+fnm install 16
+
+# Install plugin manager for neovim
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+
+# Install a bunch of software
+brew install git
+brew install zsh
+brew install pure
+brew install zsh-syntax-highlighting
+brew install tmux
+brew install tmuxinator
+brew install neovim
+
+# Setup terminal and fonts
+brew install kitty
+brew tap homebrew/cask-fonts && brew install font-fira-code-nerd-font
+
+# Nice stuff for git/neovim
+brew install colordiff
+brew install diff-so-fancy
+brew install fzy
+brew install ripgrep
