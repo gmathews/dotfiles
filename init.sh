@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Check if Homebrew is installed
 if ! command -v brew &> /dev/null; then
@@ -7,24 +7,25 @@ if ! command -v brew &> /dev/null; then
 fi
 
 # Define an associative array to store relative source file paths and their corresponding target paths
-declare -A symlinks
+typeset -A symlinks
 
 # Add your relative file-to-target mappings here
-# Format: symlinks['relative_source_file']='full_target_file'
-symlinks['gitconfig']='.gitconfig'
-symlinks['gitignore_global']='.gitignore_global'
-symlinks['tmux.conf']='.tmux.conf'
-symlinks['zshrc']='.zshrc'
-symlinks['vimrc']='.vimrc'
-symlinks['kitty.conf']='.config/kitty/kitty.conf'
-symlinks['nvim/init.vim']='.config/nvim/init.vim'
-symlinks['vscode/settings.json']='Library/Application Support/Code/User/settings.json'
+symlinks=(
+  'gitconfig'='.gitconfig'
+  'gitignore_global'='.gitignore_global'
+  'tmux.conf'='.tmux.conf'
+  'zshrc'='.zshrc'
+  'vimrc'='.vimrc'
+  'kitty.conf'='.config/kitty/kitty.conf'
+  'nvim/init.vim'='.config/nvim/init.vim'
+  'vscode/settings.json'='Library/Application Support/Code/User/settings.json'
+)
 
 # Get your home directory
 home_dir="$HOME"
 
 # Loop through the associative array and create symbolic links
-for source_rel in "${!symlinks[@]}"; do
+for source_rel in "${(@k)symlinks}"; do
     source_file="$PWD/$source_rel" # Construct the full source path
 
     # Construct the full target path starting with your home directory
