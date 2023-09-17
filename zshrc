@@ -19,7 +19,7 @@ bindkey -v
 # End of lines configured by zsh-newuser-install
 
 # Make some commands more useful
-alias ls='ls -G'
+alias ls='ls --color'
 alias grep='grep --color=always'
 export GREP_COLOR='1;37;47'
 alias diff='colordiff'
