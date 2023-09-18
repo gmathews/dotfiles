@@ -35,7 +35,6 @@ Plug 'morhetz/gruvbox'
 Plug 'pangloss/vim-javascript'
 " This is for nicer autocompletion
 " Shit breaks all the time because python on OSX sucks
-Plug 'Valloric/YouCompleteMe'
 
 " Personal wiki
 Plug 'vimwiki/vimwiki'

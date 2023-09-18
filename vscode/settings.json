@@ -1,5 +1,4 @@
 {
-    "workbench.colorTheme": "Gruvbox Dark Medium",
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
     "editor.formatOnType": true,
@@ -23,4 +22,5 @@
     "jest.coverageFormatter": "GutterFormatter",
     "editor.fontFamily": "FiraCode Nerd Font Mono",
     "editor.fontLigatures": true,
+    "workbench.colorTheme": "Gruvbox Dark Medium",
 }
