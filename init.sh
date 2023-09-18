@@ -58,6 +58,7 @@ brew install zsh
 brew install pure
 brew install zsh-syntax-highlighting
 brew install tmux
+brew install reattach-to-user-namespace
 brew install tmuxinator
 brew install neovim
 
