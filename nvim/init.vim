@@ -314,7 +314,7 @@ EOF
 autocmd BufWinEnter,BufWritePost *.js lua require('lint').try_lint()
 " autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 autocmd InsertLeave,BufWinEnter,BufWritePost *.ts lua require('lint').try_lint()
-autocmd InsertLeave,BufWritePost *.ts lua vim.lsp.buf.format()
+autocmd InsertLeave,BufWritePre *.ts lua vim.lsp.buf.format()
 set updatetime=300
 autocmd CursorHold *.ts lua vim.diagnostic.open_float(0,{scope="cursor", focus=false})
 
