@@ -2,7 +2,9 @@
 " Plugins {{{
 call plug#begin()
 " Fuzzy finding
-Plug 'cloudhead/neovim-fuzzy'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.3' }
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 
 " Better syntax highlighting
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -296,12 +298,8 @@ filters = {
 
 require('gitsigns').setup()
 
-require("indent_blankline").setup {
-    -- for example, context is off by default, use this to turn it on
-    show_current_context = true,
-    show_current_context_start = false,
-    }
-
+require("ibl").setup()
+require('telescope').load_extension('fzf')
 -- lint setup
 require('lint').linters_by_ft = {
     javascript = {'eslint',},
@@ -311,17 +309,18 @@ require('lint').linters_by_ft = {
 EOF
 " }}}
 
-autocmd BufWinEnter,BufWritePost *.js lua require('lint').try_lint()
-" autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+autocmd InsertLeave,BufWinEnter,BufWritePost *.js lua require('lint').try_lint()
 autocmd InsertLeave,BufWinEnter,BufWritePost *.ts lua require('lint').try_lint()
 autocmd InsertLeave,BufWritePre *.ts lua vim.lsp.buf.format()
 set updatetime=300
 autocmd CursorHold *.ts lua vim.diagnostic.open_float(0,{scope="cursor", focus=false})
+autocmd CursorHold *.js lua vim.diagnostic.open_float(0,{scope="cursor", focus=false})
 
 " Keymaps {{{
 
 " Fuzzy finder
-map <leader>f :FuzzyOpen<CR>
+nnoremap <leader>f <cmd>Telescope find_files<cr>
+nnoremap <leader>g <cmd>Telescope live_grep<cr>
 
 " File explorer
 nnoremap <leader>e :NvimTreeToggle<CR>
