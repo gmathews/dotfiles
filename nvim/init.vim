@@ -22,7 +22,7 @@ Plug 'L3MON4D3/LuaSnip'
 Plug 'mfussenegger/nvim-lint'
 
 " Theme
-Plug 'sainnhe/gruvbox-material'
+Plug 'ellisonleao/gruvbox.nvim'
 Plug 'marko-cerovac/material.nvim'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'glepnir/zephyr-nvim'
@@ -45,6 +45,9 @@ Plug 'lewis6991/gitsigns.nvim'
 " Toggle comments with gcc
 Plug 'numToStr/Comment.nvim'
 
+" Nicer folds
+Plug 'kevinhwang91/promise-async'
+Plug 'kevinhwang91/nvim-ufo'
 
 " Status line
 Plug 'nvim-lualine/lualine.nvim'
@@ -55,16 +58,16 @@ call plug#end()
 syntax on
 set termguicolors
 set background=dark
-let g:material_style = "oceanic"
+" let g:material_style = "oceanic"
 " let g:gruvbox_material_background = 'hard'
-let g:gruvbox_material_better_performance = 1
-let g:gruvbox_material_statusline_style = 'original'
-let g:gruvbox_material_palette = 'orginal'
-colorscheme gruvbox-material
+" let g:gruvbox_material_better_performance = 1
+" let g:gruvbox_material_statusline_style = 'original'
+" let g:gruvbox_material_palette = 'orginal'
+colorscheme gruvbox
 
 " Highlight unwanted chars
-set list
-set listchars=tab:▸\ ,trail:▫,extends:→
+" set list
+" set listchars=tab:▸\ ,trail:▫,extends:→
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
@@ -76,7 +79,7 @@ autocmd BufWinLeave * call clearmatches()
 set colorcolumn=100
 " }}}
 
-
+" Vim options {{{
 " Make commands easier
 set showcmd
 let mapleader=","
@@ -160,47 +163,56 @@ endif
 
 " LaTeX wordcount
 :command Texcount !texcount '%'
+" set foldcolumn=1
+" set foldlevelstart=99
+set foldlevel=99
+set foldenable
+"}}}
 
 " LSP, completion & Treesitter {{{
 lua <<EOF
 -- LSP settings
 local lspconfig = require 'lspconfig'
 local on_attach = function(_, bufnr)
-local opts = { noremap = true, silent = true }
---vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
---vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
---vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
---vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
---vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
---vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
-vim.cmd [[ command! Format execute 'lua vim.lsp.buf.format({async=true)' ]]
+    local opts = { noremap = true, silent = true }
+    --vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+    --vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+    --vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+    --vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+    --vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+    --vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
+    vim.cmd [[ command! Format execute 'lua vim.lsp.buf.format({async=true)' ]]
 end
 
 -- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true
+}
 
 -- Enable the following language servers
-local servers = { 'clangd', 'rust_analyzer', 'pyright' }
+local servers = {'tsserver', 'clangd', 'rust_analyzer', 'pyright' }
 for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup {
         on_attach = on_attach,
         capabilities = capabilities,
         }
 end
-lspconfig.tsserver.setup({
-    handlers = {
-        ['textDocument/publishDiagnostics'] = function(...) end
-    },
-    on_attach = on_attach,
-    capabilities = capabilities,
-})
+-- lspconfig.tsserver.setup({
+--     handlers = {
+--         ['textDocument/publishDiagnostics'] = function(...) end
+--     },
+--     on_attach = on_attach,
+--     capabilities = capabilities,
+-- })
 vim.diagnostic.config({
     virtual_text = false,
     signs = true,
@@ -267,6 +279,7 @@ require("symbols-outline").setup {
     width = 10,
     auto_close = true
 }
+require('ufo').setup()
 EOF
 " }}}
 
@@ -298,7 +311,12 @@ filters = {
 
 require('gitsigns').setup()
 
-require("ibl").setup()
+require("ibl").setup {
+    scope = {
+        show_start = false,
+        show_end = false,
+        },
+    }
 require('telescope').load_extension('fzf')
 -- lint setup
 require('lint').linters_by_ft = {
