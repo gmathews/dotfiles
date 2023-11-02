@@ -64,7 +64,7 @@ brew install neovim
 
 # Setup terminal and fonts
 brew install kitty
-brew tap homebrew/cask-fonts && brew install font-fira-code-nerd-font
+brew tap homebrew/cask-fonts && brew install font-symbols-only-nerd-font && brew install font-fira-code
 
 # Nice stuff for git/neovim
 brew install colordiff
