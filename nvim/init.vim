@@ -288,14 +288,29 @@ lua <<EOF
 require('Comment').setup()
 require('lualine').setup {
     options = {
-        theme = 'auto'
-        },
+        theme = 'auto',
+    },
+    extensions = { {
+        sections={
+        lualine_a={
+        function()
+            return '"g?" for help'
+        end,
+        }}
+        ,filetypes={'NvimTree'}}
+    },
     sections = {
         lualine_c = { {'filename', path = 1} },
         lualine_x = {'filetype'},
         },
     tabline = {
-        lualine_a = { {'buffers', hide_filename_extensions = true, show_filename_only = false, mode = 4, max_length = vim.o.columns }}
+        lualine_a = { {
+            filetype_names = {
+                TelescopePrompt = 'Telescope',
+                NvimTree = 'File Explorer',
+                },
+            'buffers', hide_filename_extensions = true, show_filename_only = false, mode = 4, max_length = vim.o.columns
+        }}
         }
     }
 
