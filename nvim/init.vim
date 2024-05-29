@@ -309,7 +309,7 @@ require('lualine').setup {
                 TelescopePrompt = 'Telescope',
                 NvimTree = 'File Explorer',
                 },
-            'buffers', hide_filename_extensions = true, show_filename_only = false, mode = 4, max_length = vim.o.columns
+            'buffers', hide_filename_extension = true, show_filename_only = false, mode = 4, max_length = vim.o.columns
         }}
         }
     }
