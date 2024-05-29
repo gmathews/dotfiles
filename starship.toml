@@ -1,0 +1,53 @@
+format = """
+[](color_blue)\
+$directory\
+[](bg:color_aqua fg:color_blue)\
+$git_branch\
+[](fg:color_aqua bg:color_yellow)\
+$git_state\
+$git_status\
+[](fg:color_yellow bg:color_orange)\
+$cmd_duration\
+[](fg:color_orange)\
+$line_break$character"""
+
+palette = 'gruvbox_dark'
+
+[palettes.gruvbox_dark]
+color_fg0 = '#fbf1c7'
+color_bg1 = '#3c3836'
+color_bg3 = '#665c54'
+color_blue = '#458588'
+color_aqua = '#689d6a'
+color_green = '#98971a'
+color_orange = '#d65d0e'
+color_purple = '#b16286'
+color_red = '#cc241d'
+color_yellow = '#d79921'
+
+[directory]
+style = "fg:color_fg0 bg:color_blue"
+format = "[$path $read_only]($style)"
+truncate_to_repo = false
+truncation_length = 5
+truncation_symbol = "… /"
+
+[character]
+success_symbol = "💰"
+
+[git_branch]
+symbol = ""
+style = "fg:color_fg0 bg:color_aqua"
+format = '[ $symbol $branch ]($style)'
+
+[git_state]
+style = "fg:color_fg0 bg:color_yellow"
+format = '[ \($state( $progress_current/$progress_total)\)]($style)'
+
+[git_status]
+style = "fg:color_fg0 bg:color_yellow"
+format = '[( $all_status$ahead_behind )]($style)'
+
+[cmd_duration]
+style = "fg:color_fg0 bg:color_orange"
+format = "[ $duration]($style)"

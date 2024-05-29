@@ -28,9 +28,9 @@ alias diff='colordiff'
 export EDITOR=nvim
 export VISUAL=nvim
 # Nice prompt
-export PURE_PROMPT_SYMBOL=💰
-autoload -U promptinit; promptinit
-prompt pure
+# export PURE_PROMPT_SYMBOL=💰
+# autoload -U promptinit; promptinit
+# prompt pure
 
 alias mux="tmuxinator"
 export PATH="$HOMEBREW_PREFIX/opt/ncurses/bin:$PATH"
@@ -39,9 +39,7 @@ export PATH="$HOMEBREW_PREFIX/opt/ncurses/bin:$PATH"
 bindkey "^[[A" history-beginning-search-backward
 bindkey "^[[B" history-beginning-search-forward
 
-# Wake BMO from sleep to ssh in
-alias wakeBMO='wakeonlan -i 192.168.1.255 1c:69:7a:62:59:cb'
-
 eval "$(fnm env --use-on-cd)"
 
+eval "$(starship init zsh)"
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

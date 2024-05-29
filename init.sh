@@ -18,6 +18,7 @@ symlinks=(
   'vimrc' '.vimrc'
   'kitty.conf' '.config/kitty/kitty.conf'
   'nvim/init.vim' '.config/nvim/init.vim'
+  'starship.toml' '.config/starship.toml'
   'vscode/settings.json' 'Library/Application Support/Code/User/settings.json'
 )
 
@@ -45,7 +46,7 @@ echo "All symbolic links created successfully."
 
 # Install node
 brew install fnm
-fnm install 16
+fnm install 20
 
 # Install plugin manager for neovim
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
@@ -55,12 +56,15 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 # Install a bunch of software
 brew install git
 brew install zsh
-brew install pure
+brew install starship
 brew install zsh-syntax-highlighting
 brew install tmux
 brew install reattach-to-user-namespace
 brew install tmuxinator
 brew install neovim
+
+# Modern Unix stuff
+brew install bat
 
 # Setup terminal and fonts
 brew install kitty
