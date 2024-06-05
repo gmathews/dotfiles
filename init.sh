@@ -57,6 +57,7 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 brew install git
 brew install zsh
 brew install starship
+brew install fzf # History search
 brew install zsh-syntax-highlighting
 brew install tmux
 brew install reattach-to-user-namespace
