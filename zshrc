@@ -1,5 +1,3 @@
-# The following lines were added by compinstall
-
 zstyle ':completion:*' completer _complete _ignored
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' matcher-list ''
@@ -9,37 +7,37 @@ fpath=(~/.zsh/completion $fpath)
 
 autoload -Uz compinit
 compinit
-# End of lines added by compinstall
-# Lines configured by zsh-newuser-install
+
+# Setup history
 HISTFILE=~/.histfile
-setopt HIST_IGNORE_DUPS
+setopt APPEND_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
 HISTSIZE=10000
 SAVEHIST=10000
-bindkey -v
-# End of lines configured by zsh-newuser-install
+source <(fzf --zsh)
 
 # Make some commands more useful
 alias ls='ls --color'
 alias grep='grep --color=always'
 export GREP_COLOR='1;37;47'
 alias diff='colordiff'
+alias mux="tmuxinator"
 
 # Use vim
+bindkey -v
 export EDITOR=nvim
 export VISUAL=nvim
-# Nice prompt
-# export PURE_PROMPT_SYMBOL=💰
-# autoload -U promptinit; promptinit
-# prompt pure
 
-alias mux="tmuxinator"
+# Paths
 export PATH="$HOMEBREW_PREFIX/opt/ncurses/bin:$PATH"
+eval "$(fnm env --use-on-cd)"
 
 # Search current history
 bindkey "^[[A" history-beginning-search-backward
 bindkey "^[[B" history-beginning-search-forward
 
-eval "$(fnm env --use-on-cd)"
-
+# Nice prompt
 eval "$(starship init zsh)"
+
+# Keep at the end
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
