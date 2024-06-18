@@ -19,6 +19,7 @@ symlinks=(
   'kitty.conf' '.config/kitty/kitty.conf'
   'nvim/init.vim' '.config/nvim/init.vim'
   'starship.toml' '.config/starship.toml'
+  'bat' '.config/bat/config'
   'vscode/settings.json' 'Library/Application Support/Code/User/settings.json'
 )
 
