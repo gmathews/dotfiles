@@ -77,6 +77,7 @@ brew install colordiff
 brew install diff-so-fancy
 brew install fzy
 brew install ripgrep
+brew install fd
 
 echo "fix tmux terminal in git"
 /usr/bin/tic -x tmux-256color.src
