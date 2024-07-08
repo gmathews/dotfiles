@@ -14,6 +14,7 @@ setopt APPEND_HISTORY
 setopt HIST_IGNORE_ALL_DUPS
 HISTSIZE=10000
 SAVEHIST=10000
+# cd **, kill **, ctrl+r history search
 source <(fzf --zsh)
 
 # Make some commands more useful
