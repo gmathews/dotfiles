@@ -20,7 +20,7 @@ source <(fzf --zsh)
 # Make some commands more useful
 alias ls='ls --color'
 alias grep='grep --color=always'
-export GREP_COLOR='1;37;47'
+export GREP_COLOR='1;35;40'
 alias diff='colordiff'
 alias mux="tmuxinator"
 
@@ -36,6 +36,11 @@ eval "$(fnm env --use-on-cd)"
 # Search current history
 bindkey "^[[A" history-beginning-search-backward
 bindkey "^[[B" history-beginning-search-forward
+
+git_clean_branches() {
+    git fetch --prune
+    git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D
+}
 
 # Nice prompt
 eval "$(starship init zsh)"
