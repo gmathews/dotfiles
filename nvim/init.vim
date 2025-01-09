@@ -200,7 +200,7 @@ capabilities.textDocument.foldingRange = {
 }
 
 -- Enable the following language servers
-local servers = {'tsserver', 'clangd', 'rust_analyzer', 'pyright' }
+local servers = {'ts_ls', 'clangd', 'rust_analyzer', 'pyright' }
 for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup {
         on_attach = on_attach,
@@ -361,12 +361,14 @@ require('lint').linters_by_ft = {
     typescript = {'eslint',}
     }
 
+vim.keymap.set('n', ']e', vim.diagnostic.goto_next)
+vim.keymap.set('n', '[e', vim.diagnostic.goto_prev)
 EOF
 " }}}
 
-autocmd InsertLeave,BufWinEnter,BufWritePost *.js lua require('lint').try_lint()
-autocmd InsertLeave,BufWinEnter,BufWritePost *.ts lua require('lint').try_lint()
-autocmd InsertLeave,BufWritePre *.ts lua vim.lsp.buf.format()
+autocmd BufWinEnter,BufWritePost *.js lua require('lint').try_lint()
+autocmd BufWinEnter,BufWritePost *.ts lua require('lint').try_lint()
+autocmd BufWritePre *.ts lua vim.lsp.buf.format()
 set updatetime=300
 autocmd CursorHold *.ts lua vim.diagnostic.open_float(0,{scope="cursor", focus=false})
 autocmd CursorHold *.js lua vim.diagnostic.open_float(0,{scope="cursor", focus=false})
