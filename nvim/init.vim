@@ -114,7 +114,7 @@ set shiftwidth=4  " number of spaces to use for autoindenting
 set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
 set hlsearch      " highlight search terms
 set incsearch     " show search matches as you type
-set clipboard=unnamed " yank and paste with the system clipboard
+set clipboard+=unnamed " yank and paste with the system clipboard
 set autoread
 " Refresh files if git changed them
 au FocusGained * :checktime

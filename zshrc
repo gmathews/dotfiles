@@ -1,7 +1,7 @@
 zstyle ':completion:*' completer _complete _ignored
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' matcher-list ''
-zstyle :compinstall filename '/Users/george/.zshrc'
+zstyle :compinstall filename '~/.zshrc'
 
 fpath=(~/.zsh/completion $fpath)
 
@@ -18,10 +18,10 @@ SAVEHIST=10000
 source <(fzf --zsh)
 
 # Make some commands more useful
-alias ls='ls --color'
-alias grep='grep --color=always'
-export GREP_COLOR='1;35;40'
-alias diff='colordiff'
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+# export GREP_COLOR='1;35;40'
+alias diff='diff --color=auto'
 alias mux="tmuxinator"
 
 # Use vim
@@ -30,7 +30,6 @@ export EDITOR=nvim
 export VISUAL=nvim
 
 # Paths
-export PATH="$HOMEBREW_PREFIX/opt/ncurses/bin:$PATH"
 eval "$(fnm env --use-on-cd)"
 
 # Search current history
