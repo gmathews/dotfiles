@@ -2,7 +2,6 @@
 " Plugins {{{
 call plug#begin()
 " Fuzzy finding
-Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.3' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 
@@ -64,6 +63,12 @@ set background=dark
 " let g:gruvbox_material_better_performance = 1
 " let g:gruvbox_material_statusline_style = 'original'
 " let g:gruvbox_material_palette = 'orginal'
+lua <<EOF
+require("gruvbox").setup({
+contrast = "hard",
+})
+EOF
+
 colorscheme gruvbox
 
 " Highlight unwanted chars
@@ -114,7 +119,7 @@ set shiftwidth=4  " number of spaces to use for autoindenting
 set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
 set hlsearch      " highlight search terms
 set incsearch     " show search matches as you type
-set clipboard=unnamed " yank and paste with the system clipboard
+set clipboard+=unnamed " yank and paste with the system clipboard
 set autoread
 " Refresh files if git changed them
 au FocusGained * :checktime
@@ -369,6 +374,7 @@ EOF
 autocmd BufWinEnter,BufWritePost *.js lua require('lint').try_lint()
 autocmd BufWinEnter,BufWritePost *.ts lua require('lint').try_lint()
 autocmd BufWritePre *.ts lua vim.lsp.buf.format()
+autocmd BufWritePre *.js lua vim.lsp.buf.format()
 set updatetime=300
 autocmd CursorHold *.ts lua vim.diagnostic.open_float(0,{scope="cursor", focus=false})
 autocmd CursorHold *.js lua vim.diagnostic.open_float(0,{scope="cursor", focus=false})
