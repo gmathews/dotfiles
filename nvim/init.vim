@@ -19,6 +19,7 @@ Plug 'L3MON4D3/LuaSnip'
 
 " Linter for non LSP linting
 Plug 'mfussenegger/nvim-lint'
+Plug 'dmmulroy/ts-error-translator.nvim'
 
 " Theme
 Plug 'ellisonleao/gruvbox.nvim'
@@ -365,7 +366,7 @@ require('lint').linters_by_ft = {
     javascript = {'eslint',},
     typescript = {'eslint',}
     }
-
+require("ts-error-translator").setup()
 vim.keymap.set('n', ']e', vim.diagnostic.goto_next)
 vim.keymap.set('n', '[e', vim.diagnostic.goto_prev)
 EOF
