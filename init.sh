@@ -17,7 +17,7 @@ symlinks=(
   'zshrc' '.zshrc'
   'vimrc' '.vimrc'
   'kitty.conf' '.config/kitty/kitty.conf'
-  'nvim/init.vim' '.config/nvim/init.vim'
+  'nvim' '.config/nvim'
   'starship.toml' '.config/starship.toml'
   'bat' '.config/bat/config'
   'vscode/settings.json' 'Library/Application Support/Code/User/settings.json'
@@ -75,9 +75,9 @@ brew tap homebrew/cask-fonts && brew install font-symbols-only-nerd-font && brew
 # Nice stuff for git/neovim
 brew install colordiff
 brew install diff-so-fancy
-brew install fzy
 brew install ripgrep
 brew install fd
+brew install tree-sitter-cli
 
 echo "fix tmux terminal in git"
 /usr/bin/tic -x tmux-256color.src
