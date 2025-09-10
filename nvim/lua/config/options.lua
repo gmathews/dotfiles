@@ -35,5 +35,6 @@ opt.spelllang = { "en" }
 opt.updatetime = 200 -- Save swap file and trigger CursorHold
 -- Setup folding
 opt.foldlevel = 99
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldmethod = "expr"
+opt.colorcolumn = "100"
