@@ -9,7 +9,7 @@ return {
 			highlight = { enable = true },
 			indent = { enable = true },
 			auto_install = true,
-			ensure_installed = { "javascript", "jsdoc", "json", "lua", "vim", "typescript" },
+			ensure_installed = { "javascript", "jsdoc", "json", "lua", "vim", "typescript", "c_sharp" },
 		},
 	},
 	{
@@ -20,6 +20,15 @@ return {
 			"neovim/nvim-lspconfig",
 		},
 	},
+    {
+        "Decodetalkers/csharpls-extended-lsp.nvim",
+		dependencies = {
+			"neovim/nvim-lspconfig",
+		},
+        config = function()
+            require("csharpls_extended").buf_read_cmd_bind()
+        end,
+    },
 	{
 		"saghen/blink.cmp",
 		-- optional: provides snippets for the snippet source

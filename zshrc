@@ -3,8 +3,8 @@ zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' matcher-list ''
 zstyle :compinstall filename '/Users/george/.zshrc'
 
-fpath=(~/.zsh/completion $fpath)
-
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/george/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 
@@ -30,7 +30,7 @@ export EDITOR=nvim
 export VISUAL=nvim
 
 # Paths
-export PATH="$HOMEBREW_PREFIX/opt/ncurses/bin:$PATH"
+export PATH="$HOME/.dotnet/tools:$HOME/.local/bin:/usr/local/bin:$HOMEBREW_PREFIX/opt/ncurses/bin:$PATH"
 eval "$(fnm env --use-on-cd)"
 
 # Search current history
