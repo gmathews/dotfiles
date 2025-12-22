@@ -16,19 +16,26 @@ return {
 		"mason-org/mason-lspconfig.nvim",
 		opts = {},
 		dependencies = {
-			{ "mason-org/mason.nvim", opts = {} },
+			{
+				"mason-org/mason.nvim",
+				opts = {
+					registries = {
+						"github:mason-org/mason-registry",
+						"github:Crashdummyy/mason-registry",
+					},
+				},
+			},
 			"neovim/nvim-lspconfig",
 		},
 	},
-    {
-        "Decodetalkers/csharpls-extended-lsp.nvim",
-		dependencies = {
-			"neovim/nvim-lspconfig",
+	{
+		"seblyng/roslyn.nvim",
+		ft = "cs",
+		opts = {
+			filewatching = "roslyn",
+			broad_search = true,
 		},
-        config = function()
-            require("csharpls_extended").buf_read_cmd_bind()
-        end,
-    },
+	},
 	{
 		"saghen/blink.cmp",
 		-- optional: provides snippets for the snippet source
