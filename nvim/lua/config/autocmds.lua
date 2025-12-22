@@ -29,7 +29,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- Display linting errors
 vim.api.nvim_create_autocmd("CursorHold", {
 	group = augroup("diagnostic"),
-	pattern = { "*.ts", "*.js" },
+	pattern = { "*.ts", "*.js", "*.cs" },
 	callback = function(args)
 		vim.diagnostic.open_float(args.buf, { scope = "cursor", focus = false })
 	end,
@@ -57,7 +57,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			-- Code actions
 			vim.keymap.set("n", "<leader>ca", function()
 				vim.lsp.buf.code_action()
-			end, { buffer = bufnr, desc = "Rename Symbol" })
+			end, { buffer = bufnr, desc = "Code Actions" })
 		end
 	end,
 })

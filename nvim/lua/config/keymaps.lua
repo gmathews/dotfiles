@@ -29,3 +29,6 @@ vim.keymap.set("v", "<leader>p", function()
 		},
 	})
 end, { desc = "Format selection" })
+
+-- Buffer management
+vim.keymap.set("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete buffer" })
