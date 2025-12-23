@@ -66,6 +66,12 @@ return {
 					},
 				},
 			},
+			-- winbar = {
+			-- 	lualine_c = { { "filename", path = 1 } },
+			-- },
+			inactive_winbar = {
+				lualine_c = { { "filename", path = 1 } },
+			},
 		},
 	},
 	{

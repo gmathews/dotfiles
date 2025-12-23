@@ -30,5 +30,8 @@ vim.keymap.set("v", "<leader>p", function()
 	})
 end, { desc = "Format selection" })
 
+-- Go to implementation
+vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { desc = "Go to implementation" })
+
 -- Buffer management
 vim.keymap.set("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete buffer" })
