@@ -47,3 +47,4 @@ eval "$(starship init zsh)"
 
 # Keep at the end
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+export PATH="$HOME/bin:$PATH"
