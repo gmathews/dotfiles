@@ -1,7 +1,7 @@
 zstyle ':completion:*' completer _complete _ignored
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' matcher-list ''
-zstyle :compinstall filename '/Users/george/.zshrc'
+zstyle :compinstall filename '~/.zshrc'
 
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=(/Users/george/.docker/completions $fpath)
@@ -18,10 +18,10 @@ SAVEHIST=10000
 source <(fzf --zsh)
 
 # Make some commands more useful
-alias ls='ls --color'
-alias grep='grep --color=always'
-export GREP_COLOR='1;35;40'
-alias diff='colordiff'
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+# export GREP_COLOR='1;35;40'
+alias diff='diff --color=auto'
 alias mux="tmuxinator"
 
 # Use vim
@@ -29,8 +29,6 @@ bindkey -v
 export EDITOR=nvim
 export VISUAL=nvim
 
-# Paths
-export PATH="$HOME/.dotnet/tools:$HOME/.local/bin:/usr/local/bin:$HOMEBREW_PREFIX/opt/ncurses/bin:$PATH"
 eval "$(fnm env --use-on-cd)"
 
 # Search current history

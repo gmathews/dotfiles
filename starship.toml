@@ -32,9 +32,6 @@ truncate_to_repo = false
 truncation_length = 5
 truncation_symbol = "… /"
 
-[character]
-success_symbol = "💰"
-
 [git_branch]
 symbol = ""
 style = "fg:color_fg0 bg:color_aqua"
