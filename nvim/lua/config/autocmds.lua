@@ -23,41 +23,31 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
 vim.api.nvim_create_autocmd("TextYankPost", {
 	group = augroup("highlight_yank"),
 	callback = function()
-		(vim.hl or vim.highlight).on_yank()
+		vim.hl.on_yank()
 	end,
 })
--- Display linting errors
+vim.diagnostic.config({
+	severity_sort = true,
+	float = { border = "rounded", source = true },
+})
+
+-- Show diagnostic float on cursor hold
 vim.api.nvim_create_autocmd("CursorHold", {
 	group = augroup("diagnostic"),
-	pattern = { "*.ts", "*.js", "*.cs" },
 	callback = function(args)
 		vim.diagnostic.open_float(args.buf, { scope = "cursor", focus = false })
 	end,
 })
--- Set up keymaps when LSP attaches to a buffer
+-- Set up keymaps when LSP attaches to a buffer.
+-- Note: Neovim 0.11+ ships defaults for grr (references), gri (implementation),
+-- grn (rename), gra (code action), gO (document symbol), K (hover).
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
 		local bufnr = args.buf
 
-		-- Only set up keymaps for supported capabilities
 		if client.server_capabilities.definitionProvider then
-			-- Goto definition
-			vim.keymap.set("n", "gd", function()
-				vim.lsp.buf.definition()
-			end, { buffer = bufnr, desc = "Goto Definition" })
-			-- List references
-			vim.keymap.set("n", "gr", function()
-				vim.lsp.buf.references()
-			end, { buffer = bufnr, desc = "List References" })
-			-- Rename symbol
-			vim.keymap.set("n", "<leader>rn", function()
-				vim.lsp.buf.rename()
-			end, { buffer = bufnr, desc = "Rename Symbol" })
-			-- Code actions
-			vim.keymap.set("n", "<leader>ca", function()
-				vim.lsp.buf.code_action()
-			end, { buffer = bufnr, desc = "Code Actions" })
+			vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "Goto Definition" })
 		end
 	end,
 })

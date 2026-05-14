@@ -5,12 +5,26 @@ return {
 		branch = "main",
 		lazy = false,
 		build = ":TSUpdate",
-		opts = {
-			highlight = { enable = true },
-			indent = { enable = true },
-			auto_install = true,
-			ensure_installed = { "javascript", "jsdoc", "json", "lua", "vim", "typescript", "c_sharp" },
-		},
+		config = function()
+			require("nvim-treesitter").install({
+				"javascript",
+				"jsdoc",
+				"json",
+				"lua",
+				"vim",
+				"typescript",
+				"c_sharp",
+			})
+			vim.api.nvim_create_autocmd("FileType", {
+				callback = function(args)
+					local ft = vim.bo[args.buf].filetype
+					if vim.treesitter.language.get_lang(ft) then
+						pcall(vim.treesitter.start)
+						vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+					end
+				end,
+			})
+		end,
 	},
 	{
 		"mason-org/mason-lspconfig.nvim",
@@ -76,14 +90,11 @@ return {
 	},
 	{ "dmmulroy/ts-error-translator.nvim", opts = {} },
 	{
-		"nvimtools/none-ls.nvim",
-		config = function()
-			local null_ls = require("null-ls")
-			null_ls.setup({
-				sources = {
-					null_ls.builtins.formatting.stylua,
-				},
-			})
-		end,
+		"stevearc/conform.nvim",
+		opts = {
+			formatters_by_ft = {
+				lua = { "stylua" },
+			},
+		},
 	},
 }

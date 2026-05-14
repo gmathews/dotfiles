@@ -30,7 +30,7 @@ export EDITOR=nvim
 export VISUAL=nvim
 
 # Paths
-export PATH="$HOME/.dotnet/tools:$HOME/.local/bin:/usr/local/bin:$HOMEBREW_PREFIX/opt/ncurses/bin:$PATH"
+export PATH="$HOME/.dotnet/tools:$HOME/.local/bin:$HOMEBREW_PREFIX/opt/ncurses/bin:$PATH"
 eval "$(fnm env --use-on-cd)"
 
 # Search current history
@@ -47,4 +47,3 @@ eval "$(starship init zsh)"
 
 # Keep at the end
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-export PATH="$HOME/bin:$PATH"
